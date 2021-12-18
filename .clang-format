@@ -1,0 +1,33 @@
+# Common
+BasedOnStyle: Chromium
+Language: Cpp
+ColumnLimit: 0
+
+# Indent
+AccessModifierOffset: -4
+UseTab: Always
+IndentWidth: 4
+TabWidth: 4
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 4
+SortIncludes: false
+
+# Break(改行)
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeWhile: false
+
+# SingleLine
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
