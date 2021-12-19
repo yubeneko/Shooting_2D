@@ -1,7 +1,9 @@
 #include "Game.h"
 #include "Renderer.h"
 #include "Actor.h"
+#include "SpriteComponent.h"
 #include <algorithm>
+#include "Texture.h"
 
 Game::Game()
   : mRenderer(nullptr),
@@ -155,7 +157,9 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
-
+	Actor* actor = new Actor(this);
+	SpriteComponent* sc = new SpriteComponent(actor);
+	sc->SetTexture(mRenderer->GetTexture("Assets/Ship01.png"));
 }
 
 void Game::UnloadData()

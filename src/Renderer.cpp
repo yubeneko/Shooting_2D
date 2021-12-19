@@ -5,11 +5,11 @@
 #include "VertexArray.h"
 #include "SpriteComponent.h"
 #include <algorithm>
-#include <glm/ext/matrix_clip_space.hpp> // glm::ortho
-#include <glm/ext/matrix_transform.hpp>	 // glm::lookAt
+#include <glm/ext/matrix_clip_space.hpp>  // glm::ortho
+#include <glm/ext/matrix_transform.hpp>	  // glm::lookAt
 #include <glm/gtc/type_ptr.hpp>
 
-#include<GL/glew.h>
+#include <GL/glew.h>
 
 Renderer::Renderer(Game* game)
   : mGame(game),
@@ -89,15 +89,23 @@ void Renderer::Shutdown()
 
 void Renderer::UnloadData()
 {
-	// ロードしたテクスチャの削除等
+	// テクスチャの削除
+	for (auto i : mTextures)
+	{
+		i.second->Unload();
+		delete i.second;
+	}
+	mTextures.clear();
 }
 
 void Renderer::Draw()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// TODO: アルファブレンディングを有効化
+	// アルファブレンディングを有効化
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	mSpriteShader->SetActive();
 	mSpriteVAO->SetActive();
@@ -157,13 +165,15 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 bool Renderer::LoadShaders()
 {
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Simple.vert", "Shaders/Simple.frag"))
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
 	{
 		return false;
 	}
 	mSpriteShader->SetActive();
 
-	glm::mat4 proj = glm::ortho(-512.0f, 512.0f, -384.0f, 384.0f, 0.0f, 10.0f);
+	glm::mat4 proj = glm::ortho(-mScreenWidth / 2.0f, mScreenWidth / 2.0f,
+								-mScreenHeight / 2.0f, mScreenHeight / 2.0f,
+								0.0f, 10.0f);
 
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(0, 0, 3),	 // カメラのワールド座標系における座標
@@ -171,6 +181,7 @@ bool Renderer::LoadShaders()
 		glm::vec3(0, 1, 0)	 // カメラの上方向
 	);
 
+	// ビュー射影行列を作ってシェーダーに渡す
 	glm::mat4 viewProj = proj * view;
 	mSpriteShader->SetMatrixUniform("uViewProj", glm::value_ptr(viewProj));
 
@@ -180,12 +191,13 @@ bool Renderer::LoadShaders()
 void Renderer::CreateSpriteVerts()
 {
 	// clang-format off
+	// 先頭3つは3次元頂点座標、後の2つはUV座標
 	const float vertices[] =
 	{
-		-0.5f, 0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
 	};
 
 	const unsigned int indices[] =
@@ -194,5 +206,5 @@ void Renderer::CreateSpriteVerts()
 		2, 3, 0,
 	};
 	// clang-format on
-	VertexArray vertexArray(vertices, 4, 3, indices, 6);
+	mSpriteVAO = new VertexArray(vertices, 4, 5, indices, 6);
 }

@@ -34,6 +34,9 @@ void SpriteComponent::Draw(Shader* shader)
 				static_cast<float>(mTexHeight),
 				1.0f));
 
+		// アクターのモデル行列の最後の変換として scale を適用
+		// 順番は スケール(アクター分) -> 回転 -> 平行移動 -> スケール(画像サイズ分) となる
+		// これにより、アクターの大きさが1の場合にスプライトがオリジナルのテクスチャのサイズで描画されるようになる
 		glm::mat4 modelMat = scale * mOwner->GetWorldTransform();
 		shader->SetMatrixUniform("uModel", glm::value_ptr(modelMat));
 		mTexture->SetActive();
