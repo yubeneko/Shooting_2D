@@ -18,13 +18,21 @@ public:
 
 	void Draw();
 
+	void AddSprite(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
+
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
+
+	class Texture* GetTexture(const std::string& fileName);
 
 private:
 
 	bool LoadShaders();
 	void CreateSpriteVerts();
+
+	std::unordered_map<std::string, class Texture*> mTextures;
+	std::vector<class SpriteComponent*> mSprites;
 
 	class Game* mGame;
 

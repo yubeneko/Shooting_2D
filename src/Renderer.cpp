@@ -1,7 +1,10 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
+#include "SpriteComponent.h"
+#include <algorithm>
 #include <glm/ext/matrix_clip_space.hpp> // glm::ortho
 #include <glm/ext/matrix_transform.hpp>	 // glm::lookAt
 #include <glm/gtc/type_ptr.hpp>
@@ -99,10 +102,56 @@ void Renderer::Draw()
 	mSpriteShader->SetActive();
 	mSpriteVAO->SetActive();
 
-	// TODO: スプライトコンポーネントの Draw を呼び出す
+	for (auto sprite : mSprites)
+	{
+		sprite->Draw(mSpriteShader);
+	}
 
 	// フロントバッファとバックバッファの入れ替え
 	SDL_GL_SwapWindow(mWindow);
+}
+
+void Renderer::AddSprite(SpriteComponent* sprite)
+{
+	int order = sprite->GetDrawOrder();
+	auto iter = mSprites.begin();
+	for (; iter != mSprites.end(); ++iter)
+	{
+		if (order < (*iter)->GetDrawOrder()) { break; }
+	}
+	mSprites.insert(iter, sprite);
+}
+
+void Renderer::RemoveSprite(SpriteComponent* sprite)
+{
+	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
+	mSprites.erase(iter);
+}
+
+Texture* Renderer::GetTexture(const std::string& fileName)
+{
+	Texture* tex = nullptr;
+	auto iter = mTextures.find(fileName);
+
+	if (iter != mTextures.end())
+	{
+		tex = iter->second;
+	}
+	else
+	{
+		tex = new Texture();
+		if (tex->Load(fileName))
+		{
+			mTextures.emplace(fileName, tex);
+		}
+		else
+		{
+			delete tex;
+			tex = nullptr;
+		}
+	}
+
+	return tex;
 }
 
 bool Renderer::LoadShaders()
