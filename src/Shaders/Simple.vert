@@ -2,10 +2,9 @@
 
 in vec3 inPosition;
 
-uniform mat4 model;
-uniform mat4 view_proj;
+uniform mat4 uModel;
+uniform mat4 uViewProj;
 
 void main() {
-	gl_Position = view_proj * model * vec4(inPosition, 1.0);
-	//gl_Position = vec4(inPosition, 1.0);
+	gl_Position = uViewProj * uModel * vec4(inPosition, 1.0);
 }

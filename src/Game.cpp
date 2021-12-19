@@ -72,7 +72,7 @@ void Game::RemoveActor(Actor* actor)
 		mPendingActors.pop_back();
 	}
 
-	auto iter = std::find(mActors.begin(), mActors.end(), actor);
+	iter = std::find(mActors.begin(), mActors.end(), actor);
 	if (iter != mActors.end())
 	{
 		std::iter_swap(iter, mActors.end() - 1);
