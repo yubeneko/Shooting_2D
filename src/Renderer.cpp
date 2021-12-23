@@ -100,7 +100,7 @@ void Renderer::UnloadData()
 
 void Renderer::Draw()
 {
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// アルファブレンディングを有効化

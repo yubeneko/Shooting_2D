@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "Texture.h"
 #include "AnimSpriteComponent.h"
+#include "BGSpriteComponent.h"
 
 Game::Game()
   : mRenderer(nullptr),
@@ -160,19 +161,32 @@ void Game::LoadData()
 {
 	Actor* actor = new Actor(this);
 	AnimSpriteComponent* asc = new AnimSpriteComponent(actor);
-	std::vector<Texture*> animTextures = {
+	asc->SetAnimTextures(std::vector<Texture*>{
 		mRenderer->GetTexture("Assets/Ship01.png"),
 		mRenderer->GetTexture("Assets/Ship02.png"),
 		mRenderer->GetTexture("Assets/Ship03.png"),
 		mRenderer->GetTexture("Assets/Ship04.png"),
-	};
-	asc->SetAnimTextures(animTextures);
-	actor->SetPosition(glm::vec2(5.0f, 0.0f));
+	});
+	actor->SetPosition(glm::vec2(0.0f, 0.0f));
+
+	Actor* bgActor = new Actor(this);
+	BGSpriteComponent* bgsc = new BGSpriteComponent(bgActor);
+
+	bgsc->SetBGTextures(std::vector<Texture*>{
+		mRenderer->GetTexture("Assets/Farback01.png"),
+		mRenderer->GetTexture("Assets/Farback02.png")});
+	bgsc->SetScrollSpeed(-100.0f);
+
+	BGSpriteComponent* bgsc2 = new BGSpriteComponent(bgActor, 50);
+	bgsc2->SetBGTextures(std::vector<Texture*>{
+		mRenderer->GetTexture("Assets/Stars.png"),
+		mRenderer->GetTexture("Assets/Stars.png")});
+	bgsc2->SetScrollSpeed(-200.0f);
 }
 
 void Game::UnloadData()
 {
-	while(!mActors.empty())
+	while (!mActors.empty())
 	{
 		delete mActors.back();
 	}
