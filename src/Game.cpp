@@ -4,6 +4,7 @@
 #include "SpriteComponent.h"
 #include <algorithm>
 #include "Texture.h"
+#include "AnimSpriteComponent.h"
 
 Game::Game()
   : mRenderer(nullptr),
@@ -158,8 +159,14 @@ void Game::GenerateOutput()
 void Game::LoadData()
 {
 	Actor* actor = new Actor(this);
-	SpriteComponent* sc = new SpriteComponent(actor);
-	sc->SetTexture(mRenderer->GetTexture("Assets/Ship01.png"));
+	AnimSpriteComponent* asc = new AnimSpriteComponent(actor);
+	std::vector<Texture*> animTextures = {
+		mRenderer->GetTexture("Assets/Ship01.png"),
+		mRenderer->GetTexture("Assets/Ship02.png"),
+		mRenderer->GetTexture("Assets/Ship03.png"),
+		mRenderer->GetTexture("Assets/Ship04.png"),
+	};
+	asc->SetAnimTextures(animTextures);
 }
 
 void Game::UnloadData()
