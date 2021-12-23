@@ -171,8 +171,10 @@ bool Renderer::LoadShaders()
 	}
 	mSpriteShader->SetActive();
 
-	glm::mat4 proj = glm::ortho(-mScreenWidth / 2.0f, mScreenWidth / 2.0f,
-								-mScreenHeight / 2.0f, mScreenHeight / 2.0f,
+	glm::mat4 proj = glm::ortho(-mScreenWidth / 2.0f,
+								mScreenWidth / 2.0f,
+								-mScreenHeight / 2.0f,
+								mScreenHeight / 2.0f,
 								0.0f, 10.0f);
 
 	glm::mat4 view = glm::lookAt(

@@ -167,6 +167,7 @@ void Game::LoadData()
 		mRenderer->GetTexture("Assets/Ship04.png"),
 	};
 	asc->SetAnimTextures(animTextures);
+	actor->SetPosition(glm::vec2(5.0f, 0.0f));
 }
 
 void Game::UnloadData()
