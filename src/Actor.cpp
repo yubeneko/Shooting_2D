@@ -73,9 +73,9 @@ void Actor::ComputeWorldTransform()
 	if (mRecomputeWorldTransform)
 	{
 		mRecomputeWorldTransform = false;
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(mScale, mScale, 1.0f));
-		glm::mat4 rotation = glm::rotate(scale, mRotation, glm::vec3(0.0f, 0.0f, 1.0f));
-		mWorldTransform = glm::translate(rotation, glm::vec3(mPosition, 0.0f));
+		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(mPosition, 0.0f));
+		glm::mat4 rotation = glm::rotate(translate, mRotation, glm::vec3(0.0f, 0.0f, 1.0f));
+		mWorldTransform = glm::scale(rotation, glm::vec3(mScale, mScale, 1.0f));
 
 		for (auto comp : mComponents)
 		{
@@ -98,7 +98,7 @@ void Actor::AddComponent(Component* component)
 
 void Actor::RemoveComponent(Component* component)
 {
-	auto iter = std::find(mComponents.begin(),mComponents.end(), component);
+	auto iter = std::find(mComponents.begin(), mComponents.end(), component);
 	if (iter != mComponents.end())
 	{
 		mComponents.erase(iter);
