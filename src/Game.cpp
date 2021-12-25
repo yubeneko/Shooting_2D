@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
+#include "Ship.h"
 
 
 Game::Game()
@@ -177,15 +178,7 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
-	Actor* actor = new Actor(this);
-	AnimSpriteComponent* asc = new AnimSpriteComponent(actor);
-	asc->SetAnimTextures(std::vector<Texture*>{
-		mRenderer->GetTexture("Assets/Ship01.png"),
-		mRenderer->GetTexture("Assets/Ship02.png"),
-		mRenderer->GetTexture("Assets/Ship03.png"),
-		mRenderer->GetTexture("Assets/Ship04.png"),
-	});
-	actor->SetPosition(glm::vec2(0.0f, 0.0f));
+	Actor* ship = new Ship(this);
 
 	Actor* bgActor = new Actor(this);
 	BGSpriteComponent* bgsc = new BGSpriteComponent(bgActor);
