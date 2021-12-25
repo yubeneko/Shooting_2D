@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 class Component
 {
 public:
@@ -9,7 +7,7 @@ public:
 	virtual ~Component();
 
 	virtual void Update(float deltaTime);
-	virtual void ProcessInput(const uint8_t* keyState) {}
+	virtual void ProcessInput(const struct InputState& keyState) {}
 	virtual void OnUpdateWorldTransform() {}
 
 	int GetUpdateOrder() const { return mUpdateOrder; }

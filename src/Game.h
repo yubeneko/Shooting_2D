@@ -30,6 +30,7 @@ private:
 	std::vector<class Actor*> mPendingActors;
 
 	class Renderer* mRenderer;
+	class InputSystem* mInputSystem;
 
 	Uint32 mTicksCount;
 	bool mIsRunning;

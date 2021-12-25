@@ -1,11 +1,13 @@
 #include "Game.h"
 #include "Renderer.h"
+#include "InputSystem.h"
 #include "Actor.h"
 #include "SpriteComponent.h"
 #include <algorithm>
 #include "Texture.h"
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
+
 
 Game::Game()
   : mRenderer(nullptr),
@@ -19,6 +21,13 @@ bool Game::Initialize()
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		SDL_Log("Unable to initialize SDL : %s", SDL_GetError());
+		return false;
+	}
+
+	mInputSystem = new InputSystem();
+	if (!mInputSystem->Initialize())
+	{
+		SDL_Log("Failed to initialize Input System");
 		return false;
 	}
 
@@ -51,7 +60,12 @@ void Game::RunLoop()
 void Game::Shutdown()
 {
 	UnloadData();
+
+	mInputSystem->Shutdown();
+	delete mInputSystem;
+
 	if (mRenderer) { mRenderer->Shutdown(); }
+
 	SDL_Quit();
 }
 
@@ -86,6 +100,8 @@ void Game::RemoveActor(Actor* actor)
 
 void Game::ProcessInput()
 {
+	mInputSystem->PrepareForUpdate();
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -97,8 +113,10 @@ void Game::ProcessInput()
 		}
 	}
 
-	const uint8_t* state = SDL_GetKeyboardState(NULL);
-	if (state[SDL_SCANCODE_ESCAPE])
+	mInputSystem->Update();
+	const InputState& state = mInputSystem->GetState();
+
+	if (state.keyboard.GetKeyUp(SDL_SCANCODE_ESCAPE))
 	{
 		mIsRunning = false;
 	}

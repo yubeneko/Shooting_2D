@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <cstdint>
 #include <glm/glm.hpp>
 
 class Actor
@@ -25,8 +24,8 @@ public:
 	void ComputeWorldTransform();
 
 	// 入力系
-	void ProcessInput(const uint8_t* keyState);
-	virtual void ActorInput(const uint8_t* keyState);
+	void ProcessInput(const struct InputState& keyState);
+	virtual void ActorInput(const struct InputState& keyState);
 
 	// Componentの追加/削除
 	void AddComponent(class Component* component);

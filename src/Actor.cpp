@@ -3,6 +3,7 @@
 #include "Component.h"
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
+#include "InputSystem.h"
 
 Actor::Actor(Game* game)
   : mState(EActive),
@@ -50,7 +51,7 @@ void Actor::UpdateActor(float deltaTime)
 {
 }
 
-void Actor::ProcessInput(const uint8_t* keyState)
+void Actor::ProcessInput(const struct InputState& keyState)
 {
 	if (mState == EActive)
 	{
@@ -63,7 +64,7 @@ void Actor::ProcessInput(const uint8_t* keyState)
 	}
 }
 
-void Actor::ActorInput(const uint8_t* keyState)
+void Actor::ActorInput(const struct InputState& keyState)
 {
 }
 
