@@ -8,7 +8,8 @@
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
 #include "Ship.h"
-#include "Asteroid.h"
+#include "PlayerInputMove.h"
+
 
 
 Game::Game()
@@ -180,11 +181,7 @@ void Game::GenerateOutput()
 void Game::LoadData()
 {
 	Actor* ship = new Ship(this);
-
-	// Actor 側のサイズが変化すると、それに応じて位置が変化してしまう
-	Actor* asteroid = new Asteroid(this);
-	asteroid->SetPosition(glm::vec2(600.0f, 0.0f)); asteroid->SetScale(0.5f);
-	asteroid->SetScale(0.5f);
+	PlayerInputMove* pim = new PlayerInputMove(ship);
 
 	Actor* bgActor = new Actor(this);
 	BGSpriteComponent* bgsc = new BGSpriteComponent(bgActor);
