@@ -2,13 +2,9 @@
 #include "Renderer.h"
 #include "InputSystem.h"
 #include "Actor.h"
-#include "SpriteComponent.h"
+#include "GameLogic.h"
+
 #include <algorithm>
-#include "Texture.h"
-#include "AnimSpriteComponent.h"
-#include "BGSpriteComponent.h"
-#include "Ship.h"
-#include "PlayerInputMove.h"
 
 
 
@@ -180,22 +176,7 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
-	Actor* ship = new Ship(this);
-	PlayerInputMove* pim = new PlayerInputMove(ship);
-
-	Actor* bgActor = new Actor(this);
-	BGSpriteComponent* bgsc = new BGSpriteComponent(bgActor);
-
-	bgsc->SetBGTextures(std::vector<Texture*>{
-		mRenderer->GetTexture("Assets/Farback01.png"),
-		mRenderer->GetTexture("Assets/Farback02.png")});
-	bgsc->SetScrollSpeed(-100.0f);
-
-	BGSpriteComponent* bgsc2 = new BGSpriteComponent(bgActor, 50);
-	bgsc2->SetBGTextures(std::vector<Texture*>{
-		mRenderer->GetTexture("Assets/Stars.png"),
-		mRenderer->GetTexture("Assets/Stars.png")});
-	bgsc2->SetScrollSpeed(-200.0f);
+	GameLogic::LoadData(this);
 }
 
 void Game::UnloadData()
