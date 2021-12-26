@@ -6,7 +6,10 @@
 
 CircleCollider::CircleCollider(Actor* owner)
   : Component(owner),
-	mCircle(glm::vec2(0.0f, 0.0f), 1.0f)
+	mCircle(glm::vec2(
+				owner->GetPosition().x,
+				owner->GetPosition().y),
+			1.0f)
 {
 	owner->GetGame()->GetPhysWorld()->AddCircle(this);
 }
