@@ -1,15 +1,15 @@
 #include "Game.h"
 #include "Renderer.h"
 #include "InputSystem.h"
+#include "PhysWorld.h"
 #include "Actor.h"
 #include "GameLogic.h"
 
 #include <algorithm>
 
-
-
 Game::Game()
   : mRenderer(nullptr),
+	mPhysWorld(nullptr),
 	mIsRunning(true),
 	mUpdatingActors(false)
 {
@@ -39,6 +39,8 @@ bool Game::Initialize()
 		return false;
 	}
 
+	mPhysWorld = new PhysWorld(this);
+
 	LoadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -59,6 +61,8 @@ void Game::RunLoop()
 void Game::Shutdown()
 {
 	UnloadData();
+
+	delete mPhysWorld;
 
 	mInputSystem->Shutdown();
 	delete mInputSystem;
@@ -141,6 +145,8 @@ void Game::UpdateGame()
 	mTicksCount = SDL_GetTicks();
 
 	mUpdatingActors = true;
+	// 衝突判定
+	mPhysWorld->TestPairwise();
 	for (auto actor : mActors)
 	{
 		actor->Update(deltaTime);

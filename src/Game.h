@@ -17,6 +17,7 @@ public:
 	void RemoveActor(class Actor* actor);
 
 	class Renderer* GetRenderer() const { return mRenderer; }
+	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 
 private:
 	void ProcessInput();
@@ -31,6 +32,7 @@ private:
 
 	class Renderer* mRenderer;
 	class InputSystem* mInputSystem;
+	class PhysWorld* mPhysWorld;
 
 	Uint32 mTicksCount;
 	bool mIsRunning;

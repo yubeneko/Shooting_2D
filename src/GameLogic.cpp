@@ -8,6 +8,7 @@
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
 #include "StraightEnemyMove.h"
+#include "CircleCollider.h"
 #include <vector>
 
 void GameLogic::LoadData(Game* game)
@@ -24,6 +25,7 @@ void GameLogic::LoadData(Game* game)
 		renderer->GetTexture("Assets/Ship04.png"),
 	});
 	new PlayerInputMove(playerShip);
+	CircleCollider* cc = new CircleCollider(playerShip);
 
 	// 敵機
 	Actor* enemyShip = new Ship(game);
@@ -39,6 +41,8 @@ void GameLogic::LoadData(Game* game)
 	enemyShip->SetPosition(glm::vec2(300.0f, 0.0f));
 	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
 	sem->SetRightSpeed(-200.0f);
+	CircleCollider* ecc = new CircleCollider(enemyShip);
+	ecc->SetRadius(40.0f);
 
 	// 背景用アクター
 	Actor* bgActor = new Actor(game);

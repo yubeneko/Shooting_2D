@@ -9,6 +9,8 @@ public:
 	void AddCircle(class CircleCollider* circle);
 	void RemoveCircle(class CircleCollider* circle);
 
+	void TestPairwise();
+
 private:
 	class Game* mGame;
 	std::vector<class CircleCollider*> mCircleColliders;
