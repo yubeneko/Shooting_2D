@@ -1,11 +1,13 @@
 #include "GameLogic.h"
 #include "Game.h"
+#include "Renderer.h"
+#include "Texture.h"
+
 #include "Ship.h"
 #include "PlayerInputMove.h"
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
-#include "Renderer.h"
-#include "Texture.h"
+#include "StraightEnemyMove.h"
 #include <vector>
 
 void GameLogic::LoadData(Game* game)
@@ -35,6 +37,8 @@ void GameLogic::LoadData(Game* game)
 		renderer->GetTexture("Assets/Enemy06.png"),
 	});
 	enemyShip->SetPosition(glm::vec2(300.0f, 0.0f));
+	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
+	sem->SetRightSpeed(-200.0f);
 
 	// 背景用アクター
 	Actor* bgActor = new Actor(game);
