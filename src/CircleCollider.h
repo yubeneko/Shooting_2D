@@ -1,17 +1,19 @@
 #pragma once
+
 #include "Component.h"
-#include <glm/glm.hpp>
+#include "Collision.h"
 
 class CircleCollider : public Component
 {
 public:
 	CircleCollider(class Actor* owner);
+	~CircleCollider();
 
-	float GetRadius() const { return mRadius; }
-	void SetRadius(float radius) { mRadius = radius; }
+	const Circle& GetCircle() const { return mCircle; }
+	void SetRadius(float radius) { mCircle.mRadius = radius; }
 
-	glm::vec2 GetCenterPosition() const;
+	void OnUpdateWorldTransform() override;
 
 private:
-	float mRadius;
+	Circle mCircle;
 };

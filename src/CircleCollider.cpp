@@ -1,20 +1,22 @@
 #include "CircleCollider.h"
 #include <glm/gtx/norm.hpp>
 #include "Actor.h"
+#include "Game.h"
+#include "PhysWorld.h"
 
 CircleCollider::CircleCollider(Actor* owner)
   : Component(owner),
-	mRadius(10.0f)
+	mCircle(glm::vec2(0.0f, 0.0f), 1.0f)
 {
+	owner->GetGame()->GetPhysWorld()->AddCircle(this);
 }
 
-glm::vec2 CircleCollider::GetCenterPosition() const
+CircleCollider::~CircleCollider()
 {
-	return mOwner->GetPosition();
+	mOwner->GetGame()->GetPhysWorld()->RemoveCircle(this);
 }
 
-bool InterSect(const CircleCollider& a, const CircleCollider& b)
+void CircleCollider::OnUpdateWorldTransform()
 {
-	float dsq = glm::length2((a.GetCenterPosition() - b.GetCenterPosition()));
-	return dsq <= glm::pow(a.GetRadius() + b.GetRadius(), 2);
+	mCircle.mCenter = mOwner->GetPosition();
 }
