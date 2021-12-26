@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <string>
 
 class Actor
 {
@@ -38,6 +39,10 @@ public:
 	float GetRotation() const { return mRotation; }
 	const glm::mat4& GetWorldTransform() const { return mWorldTransform; }
 	class Game* GetGame() const { return mGame; }
+	const std::string& GetTag() const { return mTag; }
+
+	// 衝突時に呼ばれる
+	virtual void OnCollision(class CircleCollider* circleCollidere) {};
 
 	// 前方ベクトル
 	glm::vec2 GetForward() const
@@ -47,6 +52,7 @@ public:
 
 	// Setter系
 	void SetState(State state) { mState = state; }
+	void SetTag(const std::string& tag) { mTag = tag; }
 	void SetPosition(const glm::vec2& position)
 	{
 		mRecomputeWorldTransform = true;
@@ -70,6 +76,7 @@ private:
 	float mRotation; // ラジアン
 	glm::mat4 mWorldTransform;
 	bool mRecomputeWorldTransform;
+	std::string mTag;
 
 	std::vector<class Component*> mComponents;
 	class Game* mGame;

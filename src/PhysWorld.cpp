@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Collision.h"
 #include "CircleCollider.h"
-#include <SDL.h>
+#include "Actor.h"
 
 PhysWorld::PhysWorld(Game* game)
   : mGame(game)
@@ -30,16 +30,38 @@ void PhysWorld::RemoveCircle(CircleCollider* circle)
 
 void PhysWorld::TestPairwise()
 {
+	// スイープ&プルーンによる衝突テスト
+
+	// まずは円の最小のバウンディングボリュームにおける最小のx座標でソート
+	std::sort(mCircleColliders.begin(),
+			  mCircleColliders.end(),
+			  [](CircleCollider* a, CircleCollider* b) {
+				  float aMinX = a->GetCircle().mCenter.x - a->GetCircle().mRadius;
+				  float bMinX = b->GetCircle().mCenter.x - b->GetCircle().mRadius;
+				  return aMinX < bMinX;
+			  });
+
 	for (size_t i = 0; i < mCircleColliders.size(); i++)
 	{
-		for(size_t j = i + 1; j < mCircleColliders.size(); j++)
+		// 現在注目している円のバウンディングボリュームにおける最大のx座標を保持
+		CircleCollider* a = mCircleColliders[i];
+		float max = a->GetCircle().mCenter.x + a->GetCircle().mRadius;
+
+		for (size_t j = i + 1; j < mCircleColliders.size(); j++)
 		{
-			CircleCollider* a = mCircleColliders[i];
 			CircleCollider* b = mCircleColliders[j];
 
-			if (InterSect(a->GetCircle(), b->GetCircle()))
+			// 注目中の円と、それと比較する円の位置関係を調べ、x軸上で重なりがなければ
+			// 現在注目している円はそれ以降どんな円とも衝突しない
+			if (max < b->GetCircle().mCenter.x - b->GetCircle().mRadius)
 			{
-				SDL_Log("衝突!");
+				break;
+			}
+			else if (InterSect(a->GetCircle(), b->GetCircle()))
+			{
+				// お互いの Actor の OnCollision を呼び出す
+				a->GetOwner()->OnCollision(b);
+				b->GetOwner()->OnCollision(a);
 			}
 		}
 	}

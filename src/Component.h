@@ -10,6 +10,7 @@ public:
 	virtual void ProcessInput(const struct InputState& keyState) {}
 	virtual void OnUpdateWorldTransform() {}
 
+	class Actor* GetOwner() { return mOwner; }
 	int GetUpdateOrder() const { return mUpdateOrder; }
 
 protected:

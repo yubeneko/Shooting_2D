@@ -26,10 +26,16 @@ void GameLogic::LoadData(Game* game)
 	});
 	new PlayerInputMove(playerShip);
 	CircleCollider* cc = new CircleCollider(playerShip);
+	// アクターのサイズが1ならば後にそのアクターのモデル行列はテクスチャのサイズで拡大される。
+	// すなわち、衝突判定用の円の半径はアクターのサイズが1ならばテクスチャの横か縦の
+	// どちらかの長さの半分程度に設定すればちょうどいい具合になる。
+	cc->SetRadius(20.0f);
+	playerShip->SetTag("Player");
 
 	// 敵機
 	Actor* enemyShip = new Ship(game);
-	AnimSpriteComponent* enemyAsc = new AnimSpriteComponent(enemyShip);
+	enemyShip->SetScale(0.8f);
+	AnimSpriteComponent* enemyAsc = new AnimSpriteComponent(enemyShip, 50);
 	enemyAsc->SetAnimTextures(std::vector<Texture*>{
 		renderer->GetTexture("Assets/Enemy01.png"),
 		renderer->GetTexture("Assets/Enemy02.png"),
@@ -40,9 +46,10 @@ void GameLogic::LoadData(Game* game)
 	});
 	enemyShip->SetPosition(glm::vec2(300.0f, 0.0f));
 	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
-	sem->SetRightSpeed(-200.0f);
+	sem->SetRightSpeed(-100.0f);
 	CircleCollider* ecc = new CircleCollider(enemyShip);
-	ecc->SetRadius(40.0f);
+	ecc->SetRadius(20.0f);
+	enemyShip->SetTag("Enemy");
 
 	// 背景用アクター
 	Actor* bgActor = new Actor(game);
