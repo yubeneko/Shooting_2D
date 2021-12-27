@@ -12,4 +12,5 @@ public:
 
 private:
 	float mDeathTimer;
+	float mSpeed;
 };
