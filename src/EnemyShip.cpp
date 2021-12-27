@@ -9,10 +9,10 @@ EnemyShip::EnemyShip(Game* game)
 
 void EnemyShip::OnCollision(CircleCollider* circleCollider)
 {
-	std::string tag = circleCollider->GetOwner()->GetTag();
+	Actor* other = circleCollider->GetOwner();
 
-	if (tag == "Player")
+	if (other->GetTag() == "Player")
 	{
-		SDL_Log("プレイヤーと衝突!");
+		other->SetState(EDead);
 	}
 }
