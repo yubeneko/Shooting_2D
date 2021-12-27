@@ -3,7 +3,8 @@
 #include "Renderer.h"
 #include "Texture.h"
 
-#include "Ship.h"
+#include "PlayerShip.h"
+#include "EnemyShip.h"
 #include "PlayerInputMove.h"
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
@@ -16,7 +17,7 @@ void GameLogic::LoadData(Game* game)
 	Renderer* const renderer = game->GetRenderer();
 
 	// プレイヤー操縦機
-	Actor* playerShip = new Ship(game);
+	Actor* playerShip = new PlayerShip(game);
 	AnimSpriteComponent* asc = new AnimSpriteComponent(playerShip);
 	asc->SetAnimTextures(std::vector<Texture*>{
 		renderer->GetTexture("Assets/Ship01.png"),
@@ -33,7 +34,7 @@ void GameLogic::LoadData(Game* game)
 	playerShip->SetTag("Player");
 
 	// 敵機
-	Actor* enemyShip = new Ship(game);
+	Actor* enemyShip = new EnemyShip(game);
 	enemyShip->SetScale(0.8f);
 	AnimSpriteComponent* enemyAsc = new AnimSpriteComponent(enemyShip, 50);
 	enemyAsc->SetAnimTextures(std::vector<Texture*>{

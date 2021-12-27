@@ -2,10 +2,10 @@
 
 #include "Actor.h"
 
-class Ship : public Actor
+class EnemyShip : public Actor
 {
 public:
-	Ship(class Game* game);
+	EnemyShip(class Game* game);
 
 	void OnCollision (class CircleCollider* circleCollider) override;
 };
