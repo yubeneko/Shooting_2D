@@ -104,3 +104,17 @@ void Actor::RemoveComponent(Component* component)
 		mComponents.erase(iter);
 	}
 }
+
+template <typename T>
+T* Actor::GetComponent()
+{
+	for (auto c : mComponents)
+	{
+		if (typeid(*c) == typeid(T))
+		{
+			return dynamic_cast<T*>(c);
+		}
+	}
+
+	return nullptr;
+}

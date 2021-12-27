@@ -32,6 +32,10 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
+	// Component の取得
+	template <typename T>
+	T* GetComponent();
+
 	// Getter系
 	State GetState() const { return mState; }
 	const glm::vec2& GetPosition() const { return mPosition; }
