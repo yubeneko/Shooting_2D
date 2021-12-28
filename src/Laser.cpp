@@ -33,8 +33,13 @@ void Laser::UpdateActor(float deltaTime)
 void Laser::OnCollision(CircleCollider* collider)
 {
 	Actor* other = collider->GetOwner();
+
+	// プレイヤーとの衝突は無視
+	if (other->GetTag() == "Player") { return; }
+
 	if (other->GetTag() == "Enemy")
 	{
 		other->SetState(EDead);
+		SetState(EDead);
 	}
 }
