@@ -124,7 +124,11 @@ void Game::ProcessInput()
 		mIsRunning = false;
 	}
 
-	for (auto actor : mActors)
+	// イテレーション中にアクターが追加されるとまずいので、
+	// イテレーションに入る前に存在していたアクターだけで入力を処理する
+	std::vector<Actor*> copy(mActors);
+	// コピーに対してイテレーションを回す
+	for (auto actor : copy)
 	{
 		actor->ProcessInput(state);
 	}
