@@ -5,7 +5,7 @@
 class Laser : public Actor
 {
 public:
-	Laser(Game* game);
+	Laser(Game* game, const glm::vec2& position);
 
 	void UpdateActor(float deltaTime) override;
 	void OnCollision(class CircleCollider* circleCollider) override;
@@ -13,4 +13,5 @@ public:
 private:
 	float mDeathTimer;
 	float mSpeed;
+	static int mId;
 };

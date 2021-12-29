@@ -2,9 +2,10 @@
 #include "CircleCollider.h"
 #include <SDL.h>
 
-EnemyShip::EnemyShip(Game* game)
-  : Actor(game)
+EnemyShip::EnemyShip(Game* game, const glm::vec2& position)
+  : Actor(game, position)
 {
+	SetName("Enemy Ship");
 }
 
 void EnemyShip::OnCollision(CircleCollider* circleCollider)
@@ -13,6 +14,6 @@ void EnemyShip::OnCollision(CircleCollider* circleCollider)
 
 	if (other->GetTag() == "Player")
 	{
-		other->SetState(EDead);
+		other->SetState(Actor::EDead);
 	}
 }

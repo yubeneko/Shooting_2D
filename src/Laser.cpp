@@ -4,16 +4,26 @@
 #include "SpriteComponent.h"
 #include "Game.h"
 #include "Renderer.h"
+#include <sstream>
 
-Laser::Laser(Game* game)
-  : Actor(game),
+int Laser::mId = 0;
+
+Laser::Laser(Game* game, const glm::vec2& position)
+  : Actor(game, position),
 	mDeathTimer(3.0f),
-	mSpeed(300.0f)
+	mSpeed(350.0f)
 {
 	SpriteComponent* sc = new SpriteComponent(this);
-	sc->SetTexture(GetGame()->GetRenderer()->GetTexture("Assets/Laser.png"));
+	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Laser.png"));
+
 	CircleCollider* cc = new CircleCollider(this);
 	cc->SetRadius(10.0f);
+
+	std::ostringstream oss;
+	oss << "Laser (" << mId << ")";
+	SetName(oss.str());
+	mId += 1;
+	SetTag("Laser");
 }
 
 void Laser::UpdateActor(float deltaTime)
@@ -21,7 +31,7 @@ void Laser::UpdateActor(float deltaTime)
 	mDeathTimer -= deltaTime;
 	if (mDeathTimer <= 0.0f)
 	{
-		SetState(EDead);
+		SetState(Actor::EDead);
 		return;
 	}
 
@@ -39,7 +49,7 @@ void Laser::OnCollision(CircleCollider* collider)
 
 	if (other->GetTag() == "Enemy")
 	{
-		other->SetState(EDead);
-		SetState(EDead);
+		SetState(Actor::EDead);
+		other->SetState(Actor::EDead);
 	}
 }

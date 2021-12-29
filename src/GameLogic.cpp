@@ -17,7 +17,7 @@ void GameLogic::LoadData(Game* game)
 	Renderer* const renderer = game->GetRenderer();
 
 	// プレイヤー操縦機
-	Actor* playerShip = new PlayerShip(game);
+	Actor* playerShip = new PlayerShip(game, glm::vec2(0.0f, 0.0f));
 	AnimSpriteComponent* asc = new AnimSpriteComponent(playerShip);
 	asc->SetAnimTextures(std::vector<Texture*>{
 		renderer->GetTexture("Assets/Ship01.png"),
@@ -34,7 +34,7 @@ void GameLogic::LoadData(Game* game)
 	playerShip->SetTag("Player");
 
 	// 敵機
-	Actor* enemyShip = new EnemyShip(game);
+	Actor* enemyShip = new EnemyShip(game, glm::vec2(300.0f, 0.0f));
 	enemyShip->SetScale(0.8f);
 	AnimSpriteComponent* enemyAsc = new AnimSpriteComponent(enemyShip, 50);
 	enemyAsc->SetAnimTextures(std::vector<Texture*>{
@@ -45,7 +45,6 @@ void GameLogic::LoadData(Game* game)
 		renderer->GetTexture("Assets/Enemy05.png"),
 		renderer->GetTexture("Assets/Enemy06.png"),
 	});
-	enemyShip->SetPosition(glm::vec2(300.0f, 0.0f));
 	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
 	sem->SetRightSpeed(-100.0f);
 	CircleCollider* ecc = new CircleCollider(enemyShip);
@@ -53,7 +52,7 @@ void GameLogic::LoadData(Game* game)
 	enemyShip->SetTag("Enemy");
 
 	// 背景用アクター
-	Actor* bgActor = new Actor(game);
+	Actor* bgActor = new Actor(game, glm::vec2(0.0f, 0.0f));
 
 	// 背景その1
 	BGSpriteComponent* bgsc = new BGSpriteComponent(bgActor);

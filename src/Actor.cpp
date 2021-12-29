@@ -5,12 +5,13 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "InputSystem.h"
 
-Actor::Actor(Game* game)
+Actor::Actor(Game* game, const glm::vec2& position)
   : mState(EActive),
-	mPosition(glm::vec2(0.0f, 0.0f)),
+	mPosition(position),
 	mScale(1.0f),
 	mRotation(0.0f),
 	mRecomputeWorldTransform(true),
+	mName("Default"),
 	mGame(game)
 {
 	mGame->AddActor(this);
@@ -55,6 +56,8 @@ void Actor::ProcessInput(const struct InputState& keyState)
 {
 	if (mState == EActive)
 	{
+		// ここで不正なアクターにアクセスすることがあるらしい
+		// 不正なアクターのコンポーネントにアクセスしようとして落ちている
 		for (auto comp : mComponents)
 		{
 			comp->ProcessInput(keyState);

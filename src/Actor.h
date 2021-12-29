@@ -14,7 +14,7 @@ public:
 		EDead,
 	};
 
-	Actor(class Game* game);
+	Actor(class Game* game, const glm::vec2& position);
 	virtual ~Actor();
 
 	// 更新系
@@ -38,11 +38,12 @@ public:
 
 	// Getter系
 	State GetState() const { return mState; }
-	const glm::vec2& GetPosition() const { return mPosition; }
+	glm::vec2 GetPosition() const { return mPosition; }
 	float GetScale() const { return mScale; }
 	float GetRotation() const { return mRotation; }
 	const glm::mat4& GetWorldTransform() const { return mWorldTransform; }
 	class Game* GetGame() const { return mGame; }
+	const std::string& GetName() const { return mName; }
 	const std::string& GetTag() const { return mTag; }
 
 	// 衝突時に呼ばれる
@@ -56,6 +57,7 @@ public:
 
 	// Setter系
 	void SetState(State state) { mState = state; }
+	void SetName(const std::string& name) { mName = name; }
 	void SetTag(const std::string& tag) { mTag = tag; }
 	void SetPosition(const glm::vec2& position)
 	{
@@ -80,6 +82,7 @@ private:
 	float mRotation; // ラジアン
 	glm::mat4 mWorldTransform;
 	bool mRecomputeWorldTransform;
+	std::string mName;
 	std::string mTag;
 
 	std::vector<class Component*> mComponents;

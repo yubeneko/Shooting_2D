@@ -5,7 +5,7 @@
 class PlayerShip : public Actor
 {
 public:
-	PlayerShip(class Game* game);
+	PlayerShip(class Game* game, const glm::vec2& position);
 	void ActorInput(const struct InputState& keyState) override;
 	void UpdateActor(float deltaTime) override;
 
