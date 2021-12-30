@@ -4,12 +4,15 @@
 #include "PhysWorld.h"
 #include "Actor.h"
 #include "GameLogic.h"
+#include "AudioSystem.h"
 
 #include <algorithm>
 
 Game::Game()
   : mRenderer(nullptr),
+	mInputSystem(nullptr),
 	mPhysWorld(nullptr),
+	mAudioSystem(nullptr),
 	mIsRunning(true),
 	mUpdatingActors(false)
 {
@@ -41,6 +44,16 @@ bool Game::Initialize()
 
 	mPhysWorld = new PhysWorld(this);
 
+	mAudioSystem = new AudioSystem(this);
+	if (!mAudioSystem->Initialize())
+	{
+		SDL_Log("Failed to initialize Audio System");
+		mAudioSystem->Shutdown();
+		delete mAudioSystem;
+		mAudioSystem = nullptr;
+		return false;
+	}
+
 	LoadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -62,12 +75,25 @@ void Game::Shutdown()
 {
 	UnloadData();
 
-	delete mPhysWorld;
+	if (mPhysWorld) { delete mPhysWorld; }
 
-	mInputSystem->Shutdown();
-	delete mInputSystem;
+	if (mInputSystem)
+	{
+		mInputSystem->Shutdown();
+		delete mInputSystem;
+	}
 
-	if (mRenderer) { mRenderer->Shutdown(); }
+	if (mRenderer)
+	{
+		mRenderer->Shutdown();
+		delete mRenderer;
+	}
+
+	if (mAudioSystem)
+	{
+		mAudioSystem->Shutdown();
+		delete mAudioSystem;
+	}
 
 	SDL_Quit();
 }
@@ -177,6 +203,9 @@ void Game::UpdateGame()
 	{
 		delete actor;
 	}
+
+	// AudioSystem の更新
+	mAudioSystem->Update(deltaTime);
 }
 
 void Game::GenerateOutput()

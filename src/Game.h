@@ -18,6 +18,7 @@ public:
 
 	class Renderer* GetRenderer() const { return mRenderer; }
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
+	class AudioSystem* GetAudioSystem() const { return mAudioSystem; }
 
 private:
 	void ProcessInput();
@@ -33,6 +34,7 @@ private:
 	class Renderer* mRenderer;
 	class InputSystem* mInputSystem;
 	class PhysWorld* mPhysWorld;
+	class AudioSystem* mAudioSystem;
 
 	Uint32 mTicksCount;
 	bool mIsRunning;
