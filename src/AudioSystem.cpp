@@ -1,7 +1,10 @@
 #include "AudioSystem.h"
 #include <SDL.h>
+#include <fmod_studio.hpp>
 #include <fmod_errors.h>
 #include <vector>
+
+unsigned int AudioSystem::sNextID = 0;
 
 AudioSystem::AudioSystem(Game* game)
   : mGame(game),
@@ -57,11 +60,33 @@ bool AudioSystem::Initialize()
 
 void AudioSystem::Update(float deltaTime)
 {
+	// 処理1: ストップした EventInstance を破棄する
+
+	std::vector<unsigned int> done;
+	for (auto& iter : mEventInstances)
+	{
+		FMOD::Studio::EventInstance* e = iter.second;
+		FMOD_STUDIO_PLAYBACK_STATE state;
+		e->getPlaybackState(&state);
+		if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+		{
+			// イベントを開放
+			e->release();
+			// 終了リストに追加
+			done.emplace_back(iter.first);
+		}
+	}
+
+	// 終了リストに入っている id の EventInstance を連想配列から除去
+	for (auto id : done) { mEventInstances.erase(id); }
+
+	// 処理2: FMOD システムの更新
 	mSystem->update();
 }
 
 void AudioSystem::Shutdown()
 {
+	UnloadAllBanks();
 	if (mSystem)
 	{
 		mSystem->release();
@@ -109,7 +134,6 @@ void AudioSystem::LoadBank(const std::string& name)
 			FMOD::Studio::EventDescription* e = events[i];
 			// イベントのパス名(例:"event:/PlayerShoot")
 			e->getPath(eventName, maxPathLength, nullptr);
-			SDL_Log("%s", eventName);
 			mEvents.emplace(eventName, e);
 		}
 	}
@@ -164,8 +188,9 @@ void AudioSystem::UnloadAllBanks()
 	mEvents.clear();
 }
 
-void AudioSystem::PlayEvent(const std::string& name)
+SoundEvent AudioSystem::PlayEvent(const std::string& name)
 {
+	unsigned int retID = 0;
 	auto iter = mEvents.find(name);
 
 	// 指定されたイベントがあれば再生する
@@ -176,7 +201,21 @@ void AudioSystem::PlayEvent(const std::string& name)
 		if (event)
 		{
 			event->start();
-			event->release();
+			sNextID++;
+			retID = sNextID;
+			mEventInstances.emplace(retID, event);
 		}
 	}
+	return SoundEvent(this, retID);
+}
+
+FMOD::Studio::EventInstance* AudioSystem::GetEventInstance(unsigned int id)
+{
+	FMOD::Studio::EventInstance* event = nullptr;
+	auto iter = mEventInstances.find(id);
+	if (iter != mEventInstances.end())
+	{
+		event = iter->second;
+	}
+	return event;
 }
