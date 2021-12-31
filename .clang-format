@@ -10,7 +10,7 @@ IndentWidth: 4
 TabWidth: 4
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 4
-SortIncludes: false
+NamespaceIndentation: All
 
 # Break(改行)
 BreakBeforeBraces: Custom
@@ -31,3 +31,6 @@ AllowShortBlocksOnASingleLine: Always
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortLoopsOnASingleLine: true
+
+# Other
+SortIncludes: false
