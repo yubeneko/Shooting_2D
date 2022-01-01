@@ -6,6 +6,8 @@
 #include "GameLogic.h"
 #include "AudioSystem.h"
 #include "Font.h"
+#include "UIScreen.h"
+#include "PauseMenu.h"
 
 #include <algorithm>
 
@@ -14,7 +16,7 @@ Game::Game()
 	mInputSystem(nullptr),
 	mPhysWorld(nullptr),
 	mAudioSystem(nullptr),
-	mIsRunning(true),
+	mGameState(EGamePlay),
 	mUpdatingActors(false)
 {
 }
@@ -70,7 +72,7 @@ bool Game::Initialize()
 
 void Game::RunLoop()
 {
-	while (mIsRunning)
+	while (mGameState != EQuit)
 	{
 		ProcessInput();
 		UpdateGame();
@@ -135,6 +137,11 @@ void Game::RemoveActor(Actor* actor)
 	}
 }
 
+void Game::PushUI(UIScreen* screen)
+{
+	mUIStack.emplace_back(screen);
+}
+
 void Game::ProcessInput()
 {
 	mInputSystem->PrepareForUpdate();
@@ -145,7 +152,7 @@ void Game::ProcessInput()
 		switch (event.type)
 		{
 			case SDL_QUIT:
-				mIsRunning = false;
+				mGameState = EQuit;
 				break;
 		}
 	}
@@ -153,18 +160,29 @@ void Game::ProcessInput()
 	mInputSystem->Update();
 	const InputState& state = mInputSystem->GetState();
 
-	if (state.keyboard.GetKeyUp(SDL_SCANCODE_ESCAPE))
+	// ESCAPE キーが押されたらポーズメニューを表示する
+	if (mGameState == EGamePlay &&
+		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
 	{
-		mIsRunning = false;
+		new PauseMenu(this);
 	}
 
-	// イテレーション中にアクターが追加されるとまずいので、
-	// イテレーションに入る前に存在していたアクターだけで入力を処理する
-	std::vector<Actor*> copy(mActors);
-	// コピーに対してイテレーションを回す
-	for (auto actor : copy)
+	// ゲームの状態に応じて入力をシーン上のアクターかUIのどちらかに流す
+	if (mGameState == EGamePlay)
 	{
-		actor->ProcessInput(state);
+		// イテレーション中にアクターが追加されるとまずいので、
+		// イテレーションに入る前に存在していたアクターだけで入力を処理する
+		// TODO: mIsUpdating フラグを利用してもちゃんと動くと思うので試してみる
+		std::vector<Actor*> copy(mActors);
+		// コピーに対してイテレーションを回す
+		for (auto actor : copy)
+		{
+			actor->ProcessInput(state);
+		}
+	}
+	else if (!mUIStack.empty())
+	{
+		mUIStack.back()->ProcessInput(state);
 	}
 }
 
@@ -182,38 +200,68 @@ void Game::UpdateGame()
 	}
 	mTicksCount = SDL_GetTicks();
 
-	mUpdatingActors = true;
-	// 衝突判定
-	mPhysWorld->TestPairwise();
-	for (auto actor : mActors)
+	// ゲームがプレイ中ならばシーン中のアクターの更新をする
+	if (mGameState == EGamePlay)
 	{
-		actor->Update(deltaTime);
-	}
-	mUpdatingActors = false;
-
-	for (auto pending : mPendingActors)
-	{
-		pending->ComputeWorldTransform();
-		mActors.emplace_back(pending);
-	}
-	mPendingActors.clear();
-
-	std::vector<Actor*> deadActors;
-	for (auto actor : mActors)
-	{
-		if (actor->GetState() == Actor::EDead)
+		mUpdatingActors = true;
+		// 衝突判定
+		mPhysWorld->TestPairwise();
+		for (auto actor : mActors)
 		{
-			deadActors.emplace_back(actor);
+			actor->Update(deltaTime);
 		}
-	}
+		mUpdatingActors = false;
 
-	for (auto actor : deadActors)
-	{
-		delete actor;
+		for (auto pending : mPendingActors)
+		{
+			pending->ComputeWorldTransform();
+			mActors.emplace_back(pending);
+		}
+		mPendingActors.clear();
+
+		std::vector<Actor*> deadActors;
+		for (auto actor : mActors)
+		{
+			if (actor->GetState() == Actor::EDead)
+			{
+				deadActors.emplace_back(actor);
+			}
+		}
+
+		for (auto actor : deadActors)
+		{
+			delete actor;
+		}
 	}
 
 	// AudioSystem の更新
 	mAudioSystem->Update(deltaTime);
+
+	// UIスクリーンの更新
+	for (auto ui : mUIStack)
+	{
+		if (ui->GetState() == UIScreen::EActive)
+		{
+			ui->Update(deltaTime);
+		}
+	}
+
+	// 閉じられたUIの破棄
+	auto iter = mUIStack.begin();
+	while (iter != mUIStack.end())
+	{
+		if ((*iter)->GetState() == UIScreen::EClosing)
+		{
+			// イテレータが指す要素のオブジェクトを破棄
+			delete *iter;
+			// erase の戻り値は配列から除去した要素の次の要素を指すイテレータ!
+			iter = mUIStack.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
 }
 
 void Game::GenerateOutput()
@@ -248,7 +296,7 @@ Font* Game::GetFont(const std::string& fileName)
 	}
 	else
 	{
-		Font* font = nullptr;
+		Font* font = new Font(this);
 		if (font->Load(fileName))
 		{
 			mFonts.emplace(fileName, font);

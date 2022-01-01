@@ -8,6 +8,7 @@
 #include <glm/ext/matrix_clip_space.hpp>  // glm::ortho
 #include <glm/ext/matrix_transform.hpp>	  // glm::lookAt
 #include <glm/gtc/type_ptr.hpp>
+#include "UIScreen.h"
 
 #include <GL/glew.h>
 
@@ -113,6 +114,12 @@ void Renderer::Draw()
 	for (auto sprite : mSprites)
 	{
 		sprite->Draw(mSpriteShader);
+	}
+
+	// UI画面の描画
+	for (auto ui : mGame->GetUIStack())
+	{
+		ui->Draw(mSpriteShader);
 	}
 
 	// フロントバッファとバックバッファの入れ替え

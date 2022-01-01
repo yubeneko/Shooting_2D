@@ -4,15 +4,7 @@
 #include <unordered_map>
 #include <SDL_ttf.h>
 #include <glm/glm.hpp>
-
-namespace Color
-{
-	static const glm::vec3 Black(0.0f, 0.0f, 0.0f);
-	static const glm::vec3 White(1.0f, 1.0f, 1.0f);
-	static const glm::vec3 Red(1.0f, 0.0f, 0.0f);
-	static const glm::vec3 Green(0.0f, 1.0f, 0.0f);
-	static const glm::vec3 Blue(0.0f, 0.0f, 1.0f);
-}  // namespace Color
+#include "Color.h"
 
 class Font
 {
@@ -23,6 +15,14 @@ public:
 	bool Load(const std::string& fileName);
 	void Unload();
 
+	/**
+	 * @brief text が書かれたテクスチャを生成して返す
+	 *
+	 * @param text UIに表示する文字列
+	 * @param color UIの色
+	 * @param pointSize 文字のサイズ
+	 * @return Texture*
+	 */
 	class Texture* RenderText(
 		const std::string& text,
 		const glm::vec3& color = Color::White,

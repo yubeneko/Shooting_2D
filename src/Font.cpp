@@ -15,7 +15,7 @@ bool Font::Load(const std::string& fileName)
 {
 	// サポートするフォントサイズ
 	// clang-format off
-	std::vector<int> fontSizes = {
+	int fontSizes[] = {
 		8, 9,
 		10, 11, 12, 14, 16, 18,
 		20, 22, 24, 26, 28,
@@ -27,15 +27,15 @@ bool Font::Load(const std::string& fileName)
 	};
 	// clang-format on
 
-	for (auto size : fontSizes)
+	for (auto fontSize : fontSizes)
 	{
-		TTF_Font* font = TTF_OpenFont(fileName.c_str(), size);
+		TTF_Font* font = TTF_OpenFont(fileName.c_str(), fontSize);
 		if (font == nullptr)
 		{
-			SDL_Log("Failed to load font %s in size %d", fileName.c_str(), size);
+			SDL_Log("Failed to load font %s in size %d", fileName.c_str(), fontSize);
 			return false;
 		}
-		mFontData.emplace(size, font);
+		mFontData.emplace(fontSize, font);
 	}
 
 	return true;
@@ -43,7 +43,7 @@ bool Font::Load(const std::string& fileName)
 
 void Font::Unload()
 {
-	for (auto font : mFontData)
+	for (auto& font : mFontData)
 	{
 		TTF_CloseFont(font.second);
 	}
@@ -76,7 +76,7 @@ Texture* Font::RenderText(
 	}
 	else
 	{
-		SDL_Log("Point size %d si unsupported.", pointSize);
+		SDL_Log("Point size %d is unsupported.", pointSize);
 	}
 
 	return texture;

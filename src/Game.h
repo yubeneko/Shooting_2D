@@ -20,7 +20,19 @@ public:
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 	class AudioSystem* GetAudioSystem() const { return mAudioSystem; }
 
+	enum GameState
+	{
+		EGamePlay,
+		EPaused,
+		EQuit,
+	};
+
+	GameState GetState() const { return mGameState; }
+	void SetState(GameState state) { mGameState = state; }
+
 	class Font* GetFont(const std::string& fileName);
+	const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
+	void PushUI(class UIScreen* screen);
 
 private:
 	void ProcessInput();
@@ -39,8 +51,11 @@ private:
 	class AudioSystem* mAudioSystem;
 
 	Uint32 mTicksCount;
-	bool mIsRunning;
+	GameState mGameState;
 	bool mUpdatingActors;
 
 	std::unordered_map<std::string, class Font*> mFonts;
+	std::vector<class UIScreen*> mUIStack;
+
+	class UIScreen* mHUD;
 };
