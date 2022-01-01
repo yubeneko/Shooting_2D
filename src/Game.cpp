@@ -172,13 +172,12 @@ void Game::ProcessInput()
 	{
 		// イテレーション中にアクターが追加されるとまずいので、
 		// イテレーションに入る前に存在していたアクターだけで入力を処理する
-		// TODO: mIsUpdating フラグを利用してもちゃんと動くと思うので試してみる
-		std::vector<Actor*> copy(mActors);
-		// コピーに対してイテレーションを回す
-		for (auto actor : copy)
+		mUpdatingActors = true;
+		for (auto actor : mActors)
 		{
 			actor->ProcessInput(state);
 		}
+		mUpdatingActors = false;
 	}
 	else if (!mUIStack.empty())
 	{
