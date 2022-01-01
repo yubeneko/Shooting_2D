@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "GameLogic.h"
 #include "AudioSystem.h"
+#include "Font.h"
 
 #include <algorithm>
 
@@ -54,6 +55,12 @@ bool Game::Initialize()
 		return false;
 	}
 
+	if (TTF_Init() != 0)
+	{
+		SDL_Log("Failed to initialize SDL_ttf.");
+		return false;
+	}
+
 	LoadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -74,6 +81,7 @@ void Game::RunLoop()
 void Game::Shutdown()
 {
 	UnloadData();
+	TTF_Quit();
 
 	if (mPhysWorld) { delete mPhysWorld; }
 
@@ -228,5 +236,29 @@ void Game::UnloadData()
 	if (mRenderer)
 	{
 		mRenderer->UnloadData();
+	}
+}
+
+Font* Game::GetFont(const std::string& fileName)
+{
+	auto iter = mFonts.find(fileName);
+	if (iter != mFonts.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		Font* font = nullptr;
+		if (font->Load(fileName))
+		{
+			mFonts.emplace(fileName, font);
+		}
+		else
+		{
+			font->Unload();
+			delete font;
+			font = nullptr;
+		}
+		return font;
 	}
 }

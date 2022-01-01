@@ -20,6 +20,8 @@ public:
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 	class AudioSystem* GetAudioSystem() const { return mAudioSystem; }
 
+	class Font* GetFont(const std::string& fileName);
+
 private:
 	void ProcessInput();
 	void UpdateGame();
@@ -39,4 +41,6 @@ private:
 	Uint32 mTicksCount;
 	bool mIsRunning;
 	bool mUpdatingActors;
+
+	std::unordered_map<std::string, class Font*> mFonts;
 };

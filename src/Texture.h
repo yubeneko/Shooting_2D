@@ -8,7 +8,10 @@ public:
 	Texture();
 	~Texture();
 
+	// SOIL でテクスチャをロードする
 	bool Load(const std::string& fileName);
+	// SDL_Surface を通してテクスチャをロードする
+	void CreateFromSurface(struct SDL_Surface* surface);
 	void Unload();
 
 	void SetActive();

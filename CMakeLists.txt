@@ -11,6 +11,7 @@ find_package(SDL2 REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(GLEW REQUIRED glew)
 pkg_check_modules(GLM REQUIRED glm)
+pkg_check_modules(SDL2_TTF REQUIRED sdl2_ttf)
 
 # CMake はデフォルトで target_link_directories で指定したディレクトリを
 # ターゲットの rpath に追加するので、これを無効化する
@@ -24,6 +25,7 @@ target_include_directories(app PRIVATE
 	/usr/local/include # For SOIL
 	${CMAKE_SOURCE_DIR}/external/FMOD/core/inc
 	${CMAKE_SOURCE_DIR}/external/FMOD/studio/inc
+	${SDL2_TTF_INCLUDE_DIRS}
 )
 
 target_link_directories(app PRIVATE
@@ -46,6 +48,7 @@ target_link_libraries(app
 	${COCOA_FRAMEWORK}
 	fmodstudioL
 	fmodL
+	SDL2_ttf
 )
 
 add_custom_target(copy_assets ALL
