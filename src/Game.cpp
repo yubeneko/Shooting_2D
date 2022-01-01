@@ -29,7 +29,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	mInputSystem = new InputSystem();
+	mInputSystem = new InputSystem(this);
 	if (!mInputSystem->Initialize())
 	{
 		SDL_Log("Failed to initialize Input System");
@@ -154,6 +154,8 @@ void Game::ProcessInput()
 			case SDL_QUIT:
 				mGameState = EQuit;
 				break;
+			case SDL_MOUSEWHEEL:
+				mInputSystem->ProcessEvent(event);
 		}
 	}
 
