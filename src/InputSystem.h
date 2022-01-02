@@ -29,6 +29,7 @@ class MouseState
 public:
 	friend class InputSystem;
 
+	// 座標は画面の中心を原点とする座標
 	const glm::vec2 GetPosition() const { return mMousePos; }
 	const glm::vec2 GetScrollWheel() const { return mScrollWheel; }
 

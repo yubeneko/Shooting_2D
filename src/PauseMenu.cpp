@@ -6,9 +6,13 @@ PauseMenu::PauseMenu(Game* game)
   : UIScreen(game)
 {
 	mGame->SetState(Game::EPaused);
-	SetText(
-		"Pause Menu"
-	);
+	SetText("Pause Menu");
+	AddButton("Resume", [this]() {
+		Close();
+	});
+	AddButton("Quit", [this]() {
+		mGame->SetState(Game::EQuit);
+	});
 }
 
 PauseMenu::~PauseMenu()
@@ -20,7 +24,7 @@ void PauseMenu::ProcessInput(const struct InputState& keyState)
 {
 	UIScreen::ProcessInput(keyState);
 
-	// Pキーで閉じるようにしておく
+	// テスト用にPキーで閉じるようにしておく
 	if (keyState.keyboard.GetKeyDown(SDL_SCANCODE_P))
 	{
 		Close();
