@@ -1,90 +1,83 @@
 #include "UIButton.h"
+#include "UIScreen.h"
+#include "Game.h"
+#include "Renderer.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "InputSystem.h"
 
-// Button::Button(const std::string& name,
-// 			   class Font* font,
-// 			   std::function<void()> onClick,
-// 			   const glm::vec2& pos,
-// 			   const glm::vec2& dims)
-//   : mOnClick(onClick),
-// 	mNameTex(nullptr),
-// 	mFont(font),
-// 	mPosition(pos),
-// 	mDimensions(dims),
-// 	mHighlighted(false)
-// {
-// 	SetName(name);
-// }
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-// Button::~Button()
-// {
-// 	if (mNameTex)
-// 	{
-// 		mNameTex->Unload();
-// 		delete mNameTex;
-// 	}
-// }
+UIButton::UIButton(std::function<void()> onClick,
+				   UIScreen* owner,
+				   const glm::vec2& position,
+				   float scale,
+				   float rotation,
+				   const std::string& name)
+  : UIComponent(owner, position, scale, rotation, name),
+	mOnClick(onClick),
+	mButtonOn(nullptr),
+	mButtonOff(nullptr),
+	mHighlighted(false)
+{
+	mButtonOn = owner->GetGame()->GetRenderer()->GetTexture("Assets/ButtonYellow.png");
+	mButtonOff = owner->GetGame()->GetRenderer()->GetTexture("Assets/ButtonBlue.png");
 
-// void Button::SetName(const std::string& name)
-// {
-// 	mName = name;
-// 	if (mNameTex)
-// 	{
-// 		mNameTex->Unload();
-// 		delete mNameTex;
-// 		mNameTex = nullptr;
-// 	}
-// 	mNameTex = mFont->RenderText(mName);
-// }
+	// ボタンの押し範囲はテクスチャのサイズと同等とする
+	mClickableSize = glm::vec2(
+		static_cast<float>(mButtonOn->GetWidth()),
+		static_cast<float>(mButtonOn->GetHeight()));
+}
 
-// bool Button::ContainsPoint(const glm::vec2& pt) const
-// {
-// 	// 分離軸定理による判定
-// 	bool no = pt.x < (mPosition.x - mDimensions.x / 2.0f) ||
-// 			  pt.x > (mPosition.x + mDimensions.x / 2.0f) ||
-// 			  pt.y < (mPosition.y - mDimensions.y / 2.0f) ||
-// 			  pt.y > (mPosition.y + mDimensions.y / 2.0f);
-// 	return !no;
-// }
+void UIButton::ProcessInput(const struct InputState& state)
+{
+	UIComponent::ProcessInput(state);
+	// ボタンがマウスカーソルと重なっているかどうかを調べて、
+	// ハイライト状態を更新する
+	if (ContainsPoint(state.mouse.GetPosition()))
+	{
+		mHighlighted = true;
+	}
+	else
+	{
+		mHighlighted = false;
+	}
 
-// void Button::OnClick()
-// {
-// 	if (mOnClick) { mOnClick(); }
-// }
+	// もし左マウスボタンが押されていれば、OnClickを呼び出す
+	if (mHighlighted && state.mouse.GetButtonUp(SDL_BUTTON_LEFT)) { OnClick(); }
+}
 
+bool UIButton::ContainsPoint(const glm::vec2& pt) const
+{
+	// 分離軸定理による判定
+	glm::vec2 pos = GetPosition();
+	bool no = pt.x < (pos.x - mClickableSize.x / 2.0f) ||
+			  pt.x > (pos.x + mClickableSize.x / 2.0f) ||
+			  pt.y < (pos.y - mClickableSize.y / 2.0f) ||
+			  pt.y > (pos.y + mClickableSize.y / 2.0f);
+	return !no;
+}
 
+void UIButton::OnClick()
+{
+	if (mOnClick) { mOnClick(); }
+}
 
-// ボタンの入力処理
-// bool isLeftMouseButtonReleased = state.mouse.GetButtonUp(SDL_BUTTON_LEFT);
+void UIButton::DrawTexture(class Shader* shader)
+{
+	// ハイライトされているかどうかで利用するテクスチャを使い分ける
+	Texture* texture = mHighlighted ? mButtonOn : mButtonOff;
 
-// // ボタンがマウスカーソルと重なっているかどうかを調べて、
-// // ハイライト状態を更新する
-// for (auto b : mButtons)
-// {
-// 	if (b->ContainsPoint(state.mouse.GetPosition()))
-// 	{
-// 		b->SetHighlighted(true);
-// 	}
-// 	else
-// 	{
-// 		b->SetHighlighted(false);
-// 	}
-
-// 	if (b->GetHighlighted() && isLeftMouseButtonReleased) { b->OnClick(); }
-// }
-
-
-// UIScreen の AddButton
-// void UIScreen::AddButton(const std::string& name, std::function<void()> onClick)
-// {
-// 	// ボタンの押し範囲はテクスチャのサイズと同等とする
-// 	glm::vec2 dims(
-// 		static_cast<float>(mButtonOn->GetWidth()),
-// 		static_cast<float>(mButtonOn->GetHeight()));
-
-// 	Button* b = new Button(name, mFont, onClick, mNextButtonPos, dims);
-// 	mButtons.emplace_back(b);
-
-// 	// 次のボタンの位置を更新する
-// 	// ボタンとして使うテクスチャ + 余白の分だけ下に下げる
-// 	mNextButtonPos.y -= mButtonOff->GetHeight() + 20.0f;
-// }
+	// 短形をテクスチャの幅と高さで拡大する
+	glm::mat4 scale = glm::scale(
+		glm::mat4(1.0f),
+		glm::vec3(
+			static_cast<float>(texture->GetWidth()),
+			static_cast<float>(texture->GetHeight()),
+			1.0f));
+	glm::mat4 model = GetModelMat() * scale;
+	shader->SetMatrixUniform("uModel", glm::value_ptr(model));
+	texture->SetActive();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}

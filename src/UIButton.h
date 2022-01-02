@@ -1,28 +1,42 @@
 #pragma once
 
 #include "UIComponent.h"
+#include <functional>
 
-// class UIButton : public UIComponent
-// {
-// public:
-// 	// Getter/Setter
-// 	void SetHighlighted(bool set) { mHighlighted = set; }
-// 	bool GetHighlighted() const { return mHighlighted; }
+class UIButton : public UIComponent
+{
+public:
+	UIButton(std::function<void()> onClick,
+			 class UIScreen* owner,
+			 const glm::vec2& position = glm::vec2(0.0f, 0.0f),
+			 float scale = 1.0f,
+			 float rotation = 0.0f,
+			 const std::string& name = "UButton Component");
 
-// 座標がボタンの範囲内に含まれるかどうか
-// bool ContainsPoint(const glm::vec2& pt) const;
-// void OnClick();
+	// UIText と違って、破棄するべきリソースは存在しないのでデストラクタは不要。
 
-// private:
-// 	// ボタンが押された時のイベントハンドラ格納用
-// 	std::function<void()> mOnClick;
-// 	// ボタンのサイズ(x:幅, y:高さ)
-// 	glm::vec2 mDimensions;
-// 	bool mHighlighted;
-// 	class Texture* mButtonOn;
-//  class Texture* mButtonOff;
-// };
+	void ProcessInput(const struct InputState& state) override;
+	// Getter/Setter
+	void SetHighlighted(bool set) { mHighlighted = set; }
+	bool GetHighlighted() const { return mHighlighted; }
 
-// ハイライト用ボタンとしないボタンのテクスチャを用意する
-// mButtonOn = mGame->GetRenderer()->GetTexture("Assets/ButtonYellow.png");
-// mButtonOff = mGame->GetRenderer()->GetTexture("Assets/ButtonBlue.png");
+	// 座標がボタンの範囲内に含まれるかどうか
+	bool ContainsPoint(const glm::vec2& pt) const;
+	// イベントハンドラを呼び出す
+	void OnClick();
+
+protected:
+	void DrawTexture(class Shader* shader) override;
+
+private:
+	// ボタンが押された時のイベントハンドラ格納メンバ変数
+	std::function<void()> mOnClick;
+	// ハイライトされた時のボタンのテクスチャ
+	class Texture* mButtonOn;
+	// ハイライトされていない時のボタンのテクスチャ
+	class Texture* mButtonOff;
+	// ボタンのサイズ(x:幅, y:高さ)
+	glm::vec2 mClickableSize;
+	// ハイライトされているか
+	bool mHighlighted;
+};

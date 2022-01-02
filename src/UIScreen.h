@@ -4,6 +4,14 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Color.h"
+
+/**
+ * @brief UIScreen クラス
+ * ポーズメニューやゲームプレイ中のUIと言った、UIパーツを配置するキャンバスのような役割をもつクラス。
+ * 新しくUI画面を作る時に派生させる。
+ * UIComponent の派生クラスを保持し、それらに入力データを流したり更新処理を実行したり、描画処理を呼び出したりする
+ *
+ */
 class UIScreen
 {
 public:
@@ -24,6 +32,7 @@ public:
 		EClosing,
 	};
 
+	// UI画面を閉じる(閉じたUIは破棄される)
 	void Close();
 
 	UIState GetState() const { return mState; }

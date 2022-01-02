@@ -3,15 +3,20 @@
 #include <string>
 #include <glm/glm.hpp>
 
+/**
+ * @brief UIComponent クラス
+ * UIText や UIButton といったUIパーツクラスの基底クラスとなる。
+ * UIScreen クラスにぶら下がる形をとる。
+ */
 class UIComponent
 {
 public:
 	UIComponent(
 		class UIScreen* owner,
-		const std::string& name,
 		const glm::vec2& position = glm::vec2(0.0f, 0.0f),
 		float scale = 1.0f,
-		float rotation = 0.0f);
+		float rotation = 0.0f,
+		const std::string& name = "UIComponent");
 	virtual ~UIComponent();
 
 	virtual void ProcessInput(const struct InputState& state);
@@ -57,14 +62,14 @@ protected:
 	glm::mat4 GetModelMat() const { return mModelMat; }
 
 private:
-	// UIパーツオブジェクトの名前
-	std::string mName;
 	// 座標
 	glm::vec2 mPosition;
 	// スケール
 	float mScale;
 	// 回転(ラジアン)
 	float mRotation;
+	// UIパーツオブジェクトの名前(開発用途)
+	std::string mName;
 	// モデル行列
 	glm::mat4 mModelMat;
 	// モデル行列を再計算する必要があるかどうか

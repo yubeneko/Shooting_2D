@@ -7,15 +7,15 @@
 
 UIComponent::UIComponent(
 	UIScreen* owner,
-	const std::string& name,
 	const glm::vec2& position,
 	float scale,
-	float rotation)
+	float rotation,
+	const std::string& name)
   : mOwnerScreen(owner),
-	mName(name),
 	mPosition(position),
 	mScale(scale),
 	mRotation(rotation),
+	mName(name),
 	mShouldRecomputeModelMat(true)
 {
 	// 自分自身をオーナーのUIコンポーネントとして登録

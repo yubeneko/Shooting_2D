@@ -6,17 +6,16 @@
 #include "UIScreen.h"
 
 #include <glm/ext/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 UIText::UIText(
 	const std::string& showText,
 	UIScreen* owner,
-	const std::string& name,
 	const glm::vec2& position,
 	float scale,
-	float rotation)
-  : UIComponent(owner, name, position, scale, rotation),
+	float rotation,
+	const std::string& name)
+  : UIComponent(owner, position, scale, rotation, name),
 	mText(showText)
 {
 	mFont = owner->GetGame()->GetFont("Assets/Carlito-Regular.ttf");

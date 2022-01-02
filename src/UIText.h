@@ -8,10 +8,10 @@ class UIText : public UIComponent
 public:
 	UIText(const std::string& showText,
 		   class UIScreen* owner,
-		   const std::string& name = "UIText Component",
 		   const glm::vec2& position = glm::vec2(0.0f, 0.0f),
 		   float scale = 1.0f,
-		   float rotation = 0.0f);
+		   float rotation = 0.0f,
+		   const std::string& name = "UIText Component");
 	~UIText();
 
 	/**
