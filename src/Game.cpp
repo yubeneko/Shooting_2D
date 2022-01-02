@@ -194,6 +194,7 @@ void Game::ProcessInput()
 	// このUIScreenは同じく ESCAPE キーが押されたら Close を呼び出すので、
 	// UIスタックの更新処理の後にこの処理を置くことが重要。
 	// もし順番を逆にすると、生成と同時に破棄されることになってしまう
+	// ただし、ポーズメニューの表示開始フレームでは入力が処理されなくなることに注意
 	if (mGameState == EGamePlay &&
 		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
 	{

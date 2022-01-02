@@ -11,7 +11,7 @@ public:
 			 const glm::vec2& position = glm::vec2(0.0f, 0.0f),
 			 float scale = 1.0f,
 			 float rotation = 0.0f,
-			 const std::string& name = "UButton Component");
+			 const std::string& name = "UIButton Component");
 
 	// UIText と違って、破棄するべきリソースは存在しないのでデストラクタは不要。
 
