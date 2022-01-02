@@ -155,19 +155,22 @@ void Game::ProcessInput()
 				mGameState = EQuit;
 				break;
 			case SDL_MOUSEWHEEL:
-				mInputSystem->ProcessEvent(event);
+				if (mGameState == EGamePlay)
+				{
+					mInputSystem->ProcessEvent(event);
+				}
+				else
+				{
+					// UIシステムに入力イベントを流す
+					// 今のところ不要だが、今後実装する必要がある場合は
+					// この部分もシーン中のアクターに流すのかUIに流すのかで分ける必要がある
+				}
+				break;
 		}
 	}
 
 	mInputSystem->Update();
 	const InputState& state = mInputSystem->GetState();
-
-	// ESCAPE キーが押されたらポーズメニューを表示する
-	if (mGameState == EGamePlay &&
-		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
-	{
-		new PauseMenu(this);
-	}
 
 	// ゲームの状態に応じて入力をシーン上のアクターかUIのどちらかに流す
 	if (mGameState == EGamePlay)
@@ -185,6 +188,16 @@ void Game::ProcessInput()
 	{
 		// UIスタックのトップにあるUIスクリーンに入力データを流す
 		mUIStack.back()->ProcessInput(state);
+	}
+
+	// ESCAPE キーが押されたらポーズメニューを表示する
+	// このUIScreenは同じく ESCAPE キーが押されたら Close を呼び出すので、
+	// UIスタックの更新処理の後にこの処理を置くことが重要。
+	// もし順番を逆にすると、生成と同時に破棄されることになってしまう
+	if (mGameState == EGamePlay &&
+		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
+	{
+		new PauseMenu(this);
 	}
 }
 

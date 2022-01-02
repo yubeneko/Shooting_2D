@@ -24,8 +24,7 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::UIScreenInput(const struct InputState& keyState)
 {
-	// テスト用にPキーで閉じるようにしておく
-	if (keyState.keyboard.GetKeyDown(SDL_SCANCODE_P))
+	if (keyState.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		Close();
 	}

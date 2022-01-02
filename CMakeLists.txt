@@ -15,7 +15,8 @@ pkg_check_modules(SDL2_TTF REQUIRED sdl2_ttf)
 
 # CMake はデフォルトで target_link_directories で指定したディレクトリを
 # ターゲットの rpath に追加するので、これを無効化する
-# 後に install_name_tool で半手動で rpath を追加する
+# ただし、これをやるとCMakeのRPATH関連の設定が全て無効になるので、
+# ビルド後に install_name_tool コマンドを実行することで半手動的に rpath を追加する
 set_target_properties(app PROPERTIES SKIP_BUILD_RPATH TRUE)
 
 target_include_directories(app PRIVATE
