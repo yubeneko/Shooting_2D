@@ -183,6 +183,7 @@ void Game::ProcessInput()
 	}
 	else if (!mUIStack.empty())
 	{
+		// UIスタックのトップにあるUIスクリーンに入力データを流す
 		mUIStack.back()->ProcessInput(state);
 	}
 }
@@ -277,9 +278,23 @@ void Game::LoadData()
 
 void Game::UnloadData()
 {
+	// アクターの破棄
+	// アクターの場合、デストラクタで mActors から自分自身を取り除く処理を行うので
+	// このような形で削除を行う
 	while (!mActors.empty())
 	{
 		delete mActors.back();
+	}
+
+	// UIScreen はデストラクタで mUIStack から自分自身を取り除く処理を行わないので
+	// このような形で削除を行う
+	auto iter = mUIStack.begin();
+	while (iter != mUIStack.end())
+	{
+		// イテレータが指す要素のオブジェクトを破棄
+		delete *iter;
+		// erase の戻り値は配列から除去した要素の次の要素を指すイテレータ!
+		iter = mUIStack.erase(iter);
 	}
 
 	if (mRenderer)

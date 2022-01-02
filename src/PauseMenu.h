@@ -8,5 +8,5 @@ public:
 	PauseMenu(class Game* game);
 	~PauseMenu();
 
-	void ProcessInput(const struct InputState& keyState) override;
+	void UIScreenInput(const struct InputState& keyState) override;
 };
