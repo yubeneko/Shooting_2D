@@ -44,7 +44,10 @@ void Actor::UpdateComponents(float deltaTime)
 {
 	for (auto comp : mComponents)
 	{
-		comp->Update(deltaTime);
+		if (comp->GetEnabled())
+		{
+			comp->Update(deltaTime);
+		}
 	}
 }
 
@@ -56,11 +59,12 @@ void Actor::ProcessInput(const struct InputState& keyState)
 {
 	if (mState == EActive)
 	{
-		// ここで不正なアクターにアクセスすることがあるらしい
-		// 不正なアクターのコンポーネントにアクセスしようとして落ちている
 		for (auto comp : mComponents)
 		{
-			comp->ProcessInput(keyState);
+			if (comp->GetEnabled())
+			{
+				comp->ProcessInput(keyState);
+			}
 		}
 
 		ActorInput(keyState);

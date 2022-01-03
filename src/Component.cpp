@@ -3,7 +3,8 @@
 
 Component::Component(Actor* owner, int updateOrder)
   : mOwner(owner),
-	mUpdateOrder(updateOrder)
+	mUpdateOrder(updateOrder),
+	mEnabled(true)
 {
 	mOwner->AddComponent(this);
 }
