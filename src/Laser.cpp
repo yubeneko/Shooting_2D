@@ -31,7 +31,7 @@ void Laser::UpdateActor(float deltaTime)
 	mDeathTimer -= deltaTime;
 	if (mDeathTimer <= 0.0f)
 	{
-		SetState(Actor::EDead);
+		Destroy();
 		return;
 	}
 
@@ -49,7 +49,7 @@ void Laser::OnCollision(CircleCollider* collider)
 
 	if (other->GetTag() == "Enemy")
 	{
-		SetState(Actor::EDead);
-		other->SetState(Actor::EDead);
+		Destroy();
+		other->Destroy();
 	}
 }

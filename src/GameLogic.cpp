@@ -18,7 +18,6 @@ void GameLogic::LoadData(Game* game)
 
 	// プレイヤー操縦機
 	Actor* playerShip = new PlayerShip(game, glm::vec2(0.0f, 0.0f));
-	new AnimSpriteComponent(renderer->GetTexture("Assets/Ship.png"), 4, 1, playerShip);
 	new PlayerInputMove(playerShip);
 	CircleCollider* cc = new CircleCollider(playerShip);
 	// アクターのサイズが1ならば後にそのアクターのモデル行列はテクスチャのサイズで拡大される。
@@ -29,9 +28,6 @@ void GameLogic::LoadData(Game* game)
 
 	// 敵機
 	Actor* enemyShip = new EnemyShip(game, glm::vec2(300.0f, 0.0f));
-	enemyShip->SetScale(0.8f);
-	new AnimSpriteComponent(renderer->GetTexture("Assets/Enemy01.png"), 6, 1, enemyShip, 50);
-
 	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
 	sem->SetRightSpeed(-100.0f);
 	CircleCollider* ecc = new CircleCollider(enemyShip);
@@ -54,10 +50,4 @@ void GameLogic::LoadData(Game* game)
 		renderer->GetTexture("Assets/Stars.png"),
 		renderer->GetTexture("Assets/Stars.png")});
 	bgsc2->SetScrollSpeed(-200.0f);
-
-	Actor* test = new Actor(game, glm::vec2(0.0f, 0.0f));
-	AnimSpriteComponent* testAsc = new AnimSpriteComponent(
-		renderer->GetTexture("Assets/Explosion.png"), 3, 3, test, 50);
-	testAsc->SetIsLooping(false);
-	testAsc->SetAnimFPS(1.0f);
 }
