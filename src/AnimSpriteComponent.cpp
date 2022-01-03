@@ -10,7 +10,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-AnimSpriteComponent::AnimSpriteComponent(class Actor* owner, int drawOrder)
+AnimSpriteComponent::AnimSpriteComponent(Actor* owner, int drawOrder)
   : SpriteComponent(owner, drawOrder),
 	mCurrentFrame(0.0f),
 	mAnimFPS(24.0f),
@@ -44,15 +44,16 @@ void AnimSpriteComponent::Update(float deltaTime)
 		{
 			mCurrentFrame += mAnimFPS * deltaTime;
 
+			if (!mIsLooping && mCurrentFrame >= mUVs.size())
+			{
+				mIsPlaying = false;
+				mCurrentFrame = 0.0f;
+				return;
+			}
+
 			while (mCurrentFrame >= mUVs.size())
 			{
 				mCurrentFrame -= mUVs.size();
-			}
-
-			// ループ再生でなく、今の表示フレームが最後のフレームだった場合、再生を終了する
-			if (!mIsLooping && static_cast<int>(mCurrentFrame) == mUVs.size() - 1)
-			{
-				mIsPlaying = false;
 			}
 
 			mCurrentUV = mUVs[static_cast<int>(mCurrentFrame)];
@@ -63,6 +64,13 @@ void AnimSpriteComponent::Update(float deltaTime)
 		if (mAnimTextures.size() > 0)
 		{
 			mCurrentFrame += mAnimFPS * deltaTime;
+
+			if (!mIsLooping && mCurrentFrame >= mAnimTextures.size())
+			{
+				mIsPlaying = false;
+				mCurrentFrame = 0.0f;
+				return;
+			}
 
 			while (mCurrentFrame >= mAnimTextures.size())
 			{
@@ -167,6 +175,8 @@ void AnimSpriteComponent::SetAnimTextures(const std::vector<Texture*>& textures)
 
 void AnimSpriteComponent::SetTextureAtlas(Texture* texture, int row, int col)
 {
+	// 元のuv座標値をクリア
+	mUVs.clear();
 	// テクスチャをセットする
 	SetTexture(texture);
 	// 画像領域の幅は テクスチャの幅/列数
