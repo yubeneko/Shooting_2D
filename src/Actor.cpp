@@ -112,6 +112,12 @@ void Actor::RemoveComponent(Component* component)
 	}
 }
 
+void Actor::Destroy()
+{
+	// 通常は単純に状態を死亡状態にするだけ
+	SetState(EDead);
+}
+
 template <typename T>
 T* Actor::GetComponent()
 {

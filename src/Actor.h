@@ -32,6 +32,10 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
+	// 自分自身を死亡状態にするときに呼ぶ
+	// 必要に応じて死に様を派生クラスでオーバーライドできる
+	virtual void Destroy();
+
 	// Component の取得
 	template <typename T>
 	T* GetComponent();
