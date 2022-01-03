@@ -2,6 +2,8 @@
 #include "Texture.h"
 #include "Actor.h"
 #include "Shader.h"
+#include "VertexArray.h"
+
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -26,8 +28,10 @@ void BGSpriteComponent::Update(float deltaTime)
 	}
 }
 
-void BGSpriteComponent::Draw(Shader* shader)
+void BGSpriteComponent::Draw(Shader* shader, VertexArray* vao)
 {
+	SetDefaultVertexBuffer(vao);
+
 	for (auto& bg : mBGTextures)
 	{
 		// サイズをテクスチャのサイズに拡大する

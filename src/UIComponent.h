@@ -52,7 +52,9 @@ public:
 protected:
 	// UIScreen だけが DrawTexture メソッドにアクセスできるようにする
 	friend class UIScreen;
-	virtual void DrawTexture(class Shader* shader) = 0;
+	virtual void DrawTexture(class Shader* shader, class VertexArray* vao) = 0;
+
+	void SetDefaultVertexBuffer(class VertexArray* vao);
 
 private:
 	void ComputeModelMatrix();

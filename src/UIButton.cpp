@@ -64,8 +64,10 @@ void UIButton::OnClick()
 	if (mOnClick) { mOnClick(); }
 }
 
-void UIButton::DrawTexture(class Shader* shader)
+void UIButton::DrawTexture(Shader* shader, VertexArray* vao)
 {
+	SetDefaultVertexBuffer(vao);
+
 	// ハイライトされているかどうかで利用するテクスチャを使い分ける
 	Texture* texture = mHighlighted ? mButtonOn : mButtonOff;
 

@@ -27,7 +27,7 @@ public:
 		int pointSize = 40.0f);
 
 protected:
-	void DrawTexture(class Shader* shader) override;
+	void DrawTexture(class Shader* shader, class VertexArray* vao) override;
 
 private:
 	// 描画するテキスト

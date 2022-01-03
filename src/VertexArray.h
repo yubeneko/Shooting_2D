@@ -17,6 +17,7 @@ public:
 
 	unsigned int GetNumVerts() const { return mNumVerts; }
 	unsigned int GetNumIndices() const { return mNumIndices; }
+	const unsigned int GetVertexBufferID () const { return mVertexBufferID; }
 
 private:
 	unsigned int mNumVerts;

@@ -9,7 +9,7 @@ class BGSpriteComponent : public SpriteComponent
 public:
 	BGSpriteComponent(class Actor* owner, int drawOrder = 10);
 	void Update(float deltaTime) override;
-	void Draw(class Shader* shader) override;
+	void Draw(class Shader* shader, class VertexArray* vao) override;
 
 	void SetBGTextures(const std::vector<Texture*>& textures);
 	void SetScrollSpeed (float speed) { mScrollSpeed = speed; }

@@ -17,8 +17,10 @@ UIImage::UIImage(
 {
 }
 
-void UIImage::DrawTexture(Shader* shader)
+void UIImage::DrawTexture(Shader* shader, VertexArray* vao)
 {
+	SetDefaultVertexBuffer(vao);
+
 	// 短形をテクスチャの幅と高さで拡大する
 	glm::mat4 scale = glm::scale(
 		glm::mat4(1.0f),

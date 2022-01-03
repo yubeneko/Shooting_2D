@@ -8,7 +8,7 @@ public:
 	SpriteComponent(class Actor* owner, int drawOrder = 100);
 	~SpriteComponent();
 
-	virtual void Draw(class Shader* shader);
+	virtual void Draw(class Shader* shader, class VertexArray* vao);
 	virtual void SetTexture(class Texture* texture);
 
 	int GetDrawOrder() const { return mDrawOrder; }
@@ -17,6 +17,8 @@ public:
 
 protected:
 	class Texture* mTexture;
+	// デフォルトの頂点バッファをセットする
+	void SetDefaultVertexBuffer(class VertexArray* vao);
 
 private:
 	int mDrawOrder;

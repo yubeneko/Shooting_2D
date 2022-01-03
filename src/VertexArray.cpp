@@ -33,6 +33,7 @@ VertexArray::VertexArray(
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, numVertElements * sizeof(float), 0);
 
+	// 頂点属性その2: UV座標
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, numVertElements * sizeof(float),
 						  reinterpret_cast<void*>(sizeof(float) * 3));

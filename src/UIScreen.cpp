@@ -52,12 +52,12 @@ void UIScreen::UpdateUIScreen(float deltaTime)
 {
 }
 
-void UIScreen::Draw(Shader* shader)
+void UIScreen::Draw(Shader* shader, VertexArray* vao)
 {
 	// UIコンポーネントを描画していく
 	for (auto ui : mUIComponents)
 	{
-		ui->DrawTexture(shader);
+		ui->DrawTexture(shader, vao);
 	}
 }
 

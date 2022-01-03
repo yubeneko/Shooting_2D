@@ -47,8 +47,10 @@ void UIText::SetText(
 	mTextTexture = mFont->RenderText(text, color, pointSize);
 }
 
-void UIText::DrawTexture(class Shader* shader)
+void UIText::DrawTexture(Shader* shader, VertexArray* vao)
 {
+	SetDefaultVertexBuffer(vao);
+
 	// 短形をテクスチャの幅と高さで拡大する
 	glm::mat4 scale = glm::scale(
 		glm::mat4(1.0f),

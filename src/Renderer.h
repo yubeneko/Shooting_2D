@@ -25,6 +25,7 @@ public:
 	float GetScreenHeight() const { return mScreenHeight; }
 
 	class Texture* GetTexture(const std::string& fileName);
+	class VertexArray* GetSpriteVAO() const { return mSpriteVAO; }
 
 private:
 

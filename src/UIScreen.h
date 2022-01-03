@@ -24,7 +24,8 @@ public:
 	void Update(float deltaTime);
 	virtual void UpdateUIScreen(float deltaTime);
 
-	void Draw(class Shader* shader);
+	// Renderer から呼ばれる
+	void Draw(class Shader* shader, class VertexArray* vao);
 
 	enum UIState
 	{

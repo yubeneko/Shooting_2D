@@ -109,17 +109,18 @@ void Renderer::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	mSpriteShader->SetActive();
+
 	mSpriteVAO->SetActive();
 
 	for (auto sprite : mSprites)
 	{
-		sprite->Draw(mSpriteShader);
+		sprite->Draw(mSpriteShader, mSpriteVAO);
 	}
 
 	// UI画面の描画
 	for (auto ui : mGame->GetUIStack())
 	{
-		ui->Draw(mSpriteShader);
+		ui->Draw(mSpriteShader, mSpriteVAO);
 	}
 
 	// フロントバッファとバックバッファの入れ替え
@@ -201,6 +202,7 @@ void Renderer::CreateSpriteVerts()
 {
 	// clang-format off
 	// 先頭3つは3次元頂点座標、後の2つはUV座標
+	// ここでは1枚の画像が単純に1つのスプライトとして利用されるようなuv座標の設定としている
 	const float vertices[] =
 	{
 		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f,

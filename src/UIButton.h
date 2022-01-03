@@ -26,7 +26,7 @@ public:
 	void OnClick();
 
 protected:
-	void DrawTexture(class Shader* shader) override;
+	void DrawTexture(class Shader* shader, class VertexArray* vao) override;
 
 private:
 	// ボタンが押された時のイベントハンドラ格納メンバ変数

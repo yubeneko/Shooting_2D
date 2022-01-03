@@ -17,7 +17,7 @@ public:
 	// デストラクタは不要
 
 protected:
-	void DrawTexture(class Shader* shader) override;
+	void DrawTexture(class Shader* shader, class VertexArray* vao) override;
 
 private:
 	class Texture* mTexture;
