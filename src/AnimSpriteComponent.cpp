@@ -14,6 +14,8 @@ AnimSpriteComponent::AnimSpriteComponent(class Actor* owner, int drawOrder)
   : SpriteComponent(owner, drawOrder),
 	mCurrentFrame(0.0f),
 	mAnimFPS(24.0f),
+	mIsLooping(true),
+	mIsPlaying(true),
 	mIsUsingTextureAtlas(false)	 // テクスチャアトラスを使わない
 {
 }
@@ -21,6 +23,8 @@ AnimSpriteComponent::AnimSpriteComponent(class Actor* owner, int drawOrder)
 AnimSpriteComponent::AnimSpriteComponent(Texture* texture, int row, int col, class Actor* owner, int drawOrder)
   : SpriteComponent(owner, drawOrder),
 	mAnimFPS(24.0f),
+	mIsLooping(true),
+	mIsPlaying(true),
 	mIsUsingTextureAtlas(true)	// テクスチャアトラスを使う
 {
 	// テクスチャをセット
@@ -51,6 +55,9 @@ void AnimSpriteComponent::Update(float deltaTime)
 {
 	SpriteComponent::Update(deltaTime);
 
+	// 再生中でなければ戻る
+	if (!mIsPlaying) { return; }
+
 	if (mIsUsingTextureAtlas)
 	{
 		if (mUVs.size() > 0)
@@ -60,6 +67,12 @@ void AnimSpriteComponent::Update(float deltaTime)
 			while (mCurrentFrame >= mUVs.size())
 			{
 				mCurrentFrame -= mUVs.size();
+			}
+
+			// ループ再生でなく、今の表示フレームが最後のフレームだった場合、再生を終了する
+			if (!mIsLooping && static_cast<int>(mCurrentFrame) == mUVs.size() - 1)
+			{
+				mIsPlaying = false;
 			}
 
 			mCurrentUV = mUVs[static_cast<int>(mCurrentFrame)];
@@ -74,6 +87,12 @@ void AnimSpriteComponent::Update(float deltaTime)
 			while (mCurrentFrame >= mAnimTextures.size())
 			{
 				mCurrentFrame -= mAnimTextures.size();
+			}
+
+			// ループ再生でなく、今の表示フレームが最後のフレームだった場合、再生を終了する
+			if (!mIsLooping && static_cast<int>(mCurrentFrame) == mAnimTextures.size() - 1)
+			{
+				mIsPlaying = false;
 			}
 
 			SetTexture(mAnimTextures[static_cast<int>(mCurrentFrame)]);
@@ -128,9 +147,7 @@ void AnimSpriteComponent::Draw(Shader* shader, VertexArray* vao)
 				vertices.data(),
 				GL_STATIC_DRAW);
 
-			// もしかしたらインデックスバッファもここで改めて登録しないとダメかも...
-
-			// サイズを切り出す領域のサイズに拡大する
+			// 切り出す領域と同じスケールに拡大する
 			glm::mat4 scale = glm::scale(
 				glm::mat4(1.0f),
 				glm::vec3(

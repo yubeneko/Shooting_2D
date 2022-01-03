@@ -15,12 +15,18 @@ public:
 	void Draw(class Shader* shader, class VertexArray* vao) override;
 
 	void SetAnimTextures(const std::vector<Texture*>& textures);
-	float GetAnimFPS () const { return mAnimFPS; }
-	void SetAnimFPS (float fps) { mAnimFPS = fps; }
+	float GetAnimFPS() const { return mAnimFPS; }
+	void SetAnimFPS(float fps) { mAnimFPS = fps; }
+	bool GetIsLooping() const { return mIsLooping; }
+	void SetIsLooping(bool isloop) { mIsLooping = isloop; }
+	bool GetIsPlaying() const { return mIsPlaying; }
+	void SetIsPlaying(bool isPlay) { mIsPlaying = isPlay; }
 
 private:
 	float mCurrentFrame;
 	float mAnimFPS;
+	bool mIsLooping;
+	bool mIsPlaying;
 
 	// テクスチャアトラスを使わない場合は、テクスチャを複数枚用意して、
 	// そのテクスチャを切り替えることでアニメーションを行う
