@@ -27,28 +27,8 @@ AnimSpriteComponent::AnimSpriteComponent(Texture* texture, int row, int col, cla
 	mIsPlaying(true),
 	mIsUsingTextureAtlas(true)	// テクスチャアトラスを使う
 {
-	// テクスチャをセット
-	SetTexture(texture);
-	// 画像領域の幅は テクスチャの幅/列数
-	mImageAreaWidth = GetTexWidth() / static_cast<float>(col);
-	// 画像領域の高さは テクスチャの高さ/行数
-	mImageAreaHeight = GetTexHeight() / static_cast<float>(row);
-
-	mUVWidth = 1.0f / col;
-	mUVHeight = 1.0f / row;
-
-	float v = 0.0f;
-	for (int i = 0; i < row; i++)
-	{
-		float u = 0.0f;
-		for (int j = 0; j < col; j++)
-		{
-			mUVs.emplace_back(u, v);
-			u += mUVWidth;
-		}
-		v += mUVHeight;
-	}
-	mCurrentUV = mUVs[0];
+	// 新しくテクスチャアトラスをセット
+	SetTextureAtlas(texture, row, col);
 }
 
 void AnimSpriteComponent::Update(float deltaTime)
@@ -180,4 +160,38 @@ void AnimSpriteComponent::SetAnimTextures(const std::vector<Texture*>& textures)
 		mCurrentFrame = 0.0f;
 		SetTexture(mAnimTextures[0]);
 	}
+
+	// テクスチャアトラスは利用しない
+	mIsUsingTextureAtlas = false;
+}
+
+void AnimSpriteComponent::SetTextureAtlas(Texture* texture, int row, int col)
+{
+	// テクスチャをセットする
+	SetTexture(texture);
+	// 画像領域の幅は テクスチャの幅/列数
+	mImageAreaWidth = GetTexWidth() / static_cast<float>(col);
+	// 画像領域の高さは テクスチャの高さ/行数
+	mImageAreaHeight = GetTexHeight() / static_cast<float>(row);
+
+	mUVWidth = 1.0f / col;
+	mUVHeight = 1.0f / row;
+
+	float v = 0.0f;
+	for (int i = 0; i < row; i++)
+	{
+		float u = 0.0f;
+		for (int j = 0; j < col; j++)
+		{
+			mUVs.emplace_back(u, v);
+			u += mUVWidth;
+		}
+		v += mUVHeight;
+	}
+	mCurrentUV = mUVs[0];
+
+	// 再生フレームを0にリセット
+	mCurrentFrame = 0.0f;
+	// テクスチャアトラスを利用する
+	mIsUsingTextureAtlas = true;
 }

@@ -6,15 +6,46 @@
 class AnimSpriteComponent : public SpriteComponent
 {
 public:
-	// テクスチャを切り替えてアニメーションを行う場合のコンストラクタ
-	// コンストラクタを呼び出した後で SetAnimTextures を呼び出すことでテクスチャをセットする
+	/**
+	 * @brief テクスチャを切り替えてアニメーションを行う場合のコンストラクタ
+	 * コンストラクタを呼び出した後で SetAnimTextures を呼び出すことでテクスチャをセットする
+	 *
+	 * @param owner オーナーのアクター
+	 * @param drawOrder 描画順(若いほど先に描画される)
+	 */
 	AnimSpriteComponent(class Actor* owner, int drawOrder = 100);
-	// テクスチャアトラスを利用し、UV座標を切り替えることでアニメーションを行う場合のコンストラクタ
+
+	/**
+	 * @brief テクスチャアトラスを利用し、UV座標を切り替えることでアニメーションを行う場合のコンストラクタ
+	 * テクスチャアトラスの中の各画像は全て同一サイズであることを想定。
+	 *
+	 * @param texture テクスチャ
+	 * @param row テクスチャアトラスの行数
+	 * @param col テクスチャアトラスの列数
+	 * @param owner オーナーのアクター
+	 * @param drawOrder 描画順(若いほど先に描画される)
+	 */
 	AnimSpriteComponent(class Texture* texture, int row, int col, class Actor* owner, int drawOrder = 100);
+
 	void Update(float deltaTime) override;
 	void Draw(class Shader* shader, class VertexArray* vao) override;
 
+	/**
+	 * @brief テクスチャを切り替えてアニメーションを行う場合に使うメンバ関数。
+	 *
+	 * @param textures アニメーションで利用するテクスチャの配列
+	 */
 	void SetAnimTextures(const std::vector<Texture*>& textures);
+
+	/**
+	 * @brief テクスチャアトラスによりアニメーションを行う場合に使うメンバ関数
+	 *
+	 * @param texture テクスチャ
+	 * @param row テクスチャアトラスの行数
+	 * @param col テクスチャアトラスの列数Ï
+	 */
+	void SetTextureAtlas(class Texture* texture, int row, int col);
+
 	float GetAnimFPS() const { return mAnimFPS; }
 	void SetAnimFPS(float fps) { mAnimFPS = fps; }
 	bool GetIsLooping() const { return mIsLooping; }
