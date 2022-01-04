@@ -26,13 +26,6 @@ PlayerShip::PlayerShip(Game* game, const glm::vec2& position)
 	// どちらかの長さの半分程度に設定すればちょうどいい具合になる。
 	mCircleCollider->SetRadius(20.0f);
 
-	// ゲームプレイ中以外では入力による移動をできなくする
-	if (!(GetGame()->GetState() == Game::EGamePlay))
-	{
-		mPlayerInputMove->SetEnabled(false);
-		mCircleCollider->SetEnabled(false);
-	}
-
 	mAnimSprite = new AnimSpriteComponent(GetGame()->GetRenderer()->GetTexture("Assets/Ship.png"), 4, 1, this);
 }
 
