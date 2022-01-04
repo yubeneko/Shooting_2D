@@ -13,5 +13,6 @@ public:
 
 private:
 	class AnimSpriteComponent* mAnimSprite;
+	class CircleCollider* mCircleCollider;
 	bool mIsDying;
 };

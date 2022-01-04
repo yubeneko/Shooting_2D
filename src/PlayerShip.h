@@ -13,6 +13,8 @@ public:
 
 private:
 	class AnimSpriteComponent* mAnimSprite;
+	class PlayerInputMove* mPlayerInputMove;
+	class CircleCollider* mCircleCollider;
 	bool mIsDying;
 	float mLaserCooldownTime;
 	float mLaserCooldownTimer;

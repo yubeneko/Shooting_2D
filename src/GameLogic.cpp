@@ -18,20 +18,12 @@ void GameLogic::LoadData(Game* game)
 
 	// プレイヤー操縦機
 	Actor* playerShip = new PlayerShip(game, glm::vec2(0.0f, 0.0f));
-	new PlayerInputMove(playerShip);
-	CircleCollider* cc = new CircleCollider(playerShip);
-	// アクターのサイズが1ならば後にそのアクターのモデル行列はテクスチャのサイズで拡大される。
-	// すなわち、衝突判定用の円の半径はアクターのサイズが1ならばテクスチャの横か縦の
-	// どちらかの長さの半分程度に設定すればちょうどいい具合になる。
-	cc->SetRadius(20.0f);
 	playerShip->SetTag("Player");
 
 	// 敵機
 	Actor* enemyShip = new EnemyShip(game, glm::vec2(300.0f, 0.0f));
 	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
 	sem->SetRightSpeed(-100.0f);
-	CircleCollider* ecc = new CircleCollider(enemyShip);
-	ecc->SetRadius(20.0f);
 	enemyShip->SetTag("Enemy");
 
 	// 背景用アクター

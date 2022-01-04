@@ -7,11 +7,15 @@
 EnemyShip::EnemyShip(Game* game, const glm::vec2& position)
   : Actor(game, position),
 	mAnimSprite(nullptr),
+	mCircleCollider(nullptr),
 	mIsDying(false)
 {
 	SetName("Enemy Ship");
 	mAnimSprite = new AnimSpriteComponent(
 		GetGame()->GetRenderer()->GetTexture("Assets/Enemy01.png"), 6, 1, this, 50);
+
+	mCircleCollider = new CircleCollider(this);
+	mCircleCollider->SetRadius(20.0f);
 }
 
 void EnemyShip::UpdateActor(float deltaTime)
@@ -42,4 +46,6 @@ void EnemyShip::Destroy()
 	mAnimSprite->SetIsLooping(false);
 	// 死にかけフラグを立てる
 	mIsDying = true;
+	// 衝突判定を無効化する
+	mCircleCollider->SetEnabled(false);
 }
