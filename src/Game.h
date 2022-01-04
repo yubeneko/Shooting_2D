@@ -22,6 +22,7 @@ public:
 
 	enum GameState
 	{
+		ETitleScene,
 		EGamePlay,
 		EPaused,
 		EQuit,
@@ -29,6 +30,14 @@ public:
 
 	GameState GetState() const { return mGameState; }
 	void SetState(GameState state) { mGameState = state; }
+
+	enum InputMode
+	{
+		EGamePlaying,
+		EUIWindow,
+	};
+
+	void SetInputMode(InputMode inputMode) { mInputMode =inputMode; }
 
 	class Font* GetFont(const std::string& fileName);
 	const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
@@ -57,9 +66,8 @@ private:
 	Uint32 mTicksCount;
 	GameState mGameState;
 	bool mUpdatingActors;
+	InputMode mInputMode;
 
 	std::unordered_map<std::string, class Font*> mFonts;
 	std::vector<class UIScreen*> mUIStack;
-
-	class UIScreen* mHUD;
 };

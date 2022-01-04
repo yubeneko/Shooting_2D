@@ -3,29 +3,31 @@
 #include "InputSystem.h"
 #include "UIText.h"
 #include "UIButton.h"
+#include "GameLogic.h"
 
 PauseMenu::PauseMenu(Game* game)
   : UIScreen(game)
 {
-	mGame->SetState(Game::EPaused);
+	mGame->SetState(Game::GameState::EPaused);
+	mGame->SetInputMode(Game::InputMode::EUIWindow);
 	new UIText("Pause Menu", this, glm::vec2(0.0f, 300.0f));
 
-	new UIButton([this]() { Close(); }, this, glm::vec2(0.0f, 200.0f));
+	// ゲームを続けるボタン
+	new UIButton(
+		[this]() {
+			mGame->SetState(Game::EGamePlay);
+			mGame->SetInputMode(Game::InputMode::EGamePlaying);
+			Close();
+		},
+		this, glm::vec2(0.0f, 200.0f));
 	new UIText("Resume", this, glm::vec2(0.0f, 200.0f));
 
-	new UIButton([this]() { mGame->SetState(Game::EQuit); }, this, glm::vec2(0.0f, 140.0f));
-	new UIText("Quit Game", this, glm::vec2(0.0f, 140.0f));
-}
-
-PauseMenu::~PauseMenu()
-{
-	mGame->SetState(Game::EGamePlay);
-}
-
-void PauseMenu::UIScreenInput(const struct InputState& keyState)
-{
-	if (keyState.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
-	{
-		Close();
-	}
+	// タイトルシーンに戻るボタン
+	new UIButton(
+		[this]() {
+			Close();
+			GameLogic::LoadTitleScene(mGame);
+		},
+		this, glm::vec2(0.0f, 140.0f));
+	new UIText("Back to Title", this, glm::vec2(0.0f, 140.0f));
 }

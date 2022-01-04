@@ -63,8 +63,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	// TODO: タイトルシーンの読み込みの代わり
-	GameLogic::LoadGameScene(this);
+	GameLogic::LoadTitleScene(this);
 
 	mTicksCount = SDL_GetTicks();
 
@@ -156,16 +155,7 @@ void Game::ProcessInput()
 				mGameState = EQuit;
 				break;
 			case SDL_MOUSEWHEEL:
-				if (mGameState == EGamePlay)
-				{
-					mInputSystem->ProcessEvent(event);
-				}
-				else
-				{
-					// UIシステムに入力イベントを流す
-					// 今のところ不要だが、今後実装する必要がある場合は
-					// この部分もシーン中のアクターに流すのかUIに流すのかで分ける必要がある
-				}
+				mInputSystem->ProcessEvent(event);
 				break;
 		}
 	}
@@ -173,8 +163,9 @@ void Game::ProcessInput()
 	mInputSystem->Update();
 	const InputState& state = mInputSystem->GetState();
 
-	// ゲームの状態に応じて入力をシーン上のアクターかUIのどちらかに流す
-	if (mGameState == EGamePlay)
+	// インプットモードに応じて入力をシーン上のアクターかUIウィンドウのどちらかに流す。
+	// ゲームプレイ中にインタラクトできるUIパーツが存在しないため、この仕様でも問題ない。
+	if (mInputMode == InputMode::EGamePlaying)
 	{
 		// イテレーション中にアクターが追加されるとまずいので、
 		// イテレーションに入る前に存在していたアクターだけで入力を処理する
@@ -191,11 +182,8 @@ void Game::ProcessInput()
 		mUIStack.back()->ProcessInput(state);
 	}
 
-	// ESCAPE キーが押されたらポーズメニューを表示する
-	// このUIScreenは同じく ESCAPE キーが押されたら Close を呼び出すので、
-	// UIスタックの更新処理の後にこの処理を置くことが重要。
-	// もし順番を逆にすると、生成と同時に破棄されることになってしまう
-	// ただし、ポーズメニューの表示開始フレームでは入力が処理されなくなることに注意
+	// mGameState が EGamePlay で、 ESCAPE キーが押されたらポーズメニューを表示する
+	// ポーズメニューの表示開始フレームでは入力が処理されなくなるが、問題はないと思われる
 	if (mGameState == EGamePlay &&
 		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
 	{
@@ -217,8 +205,8 @@ void Game::UpdateGame()
 	}
 	mTicksCount = SDL_GetTicks();
 
-	// ゲームがプレイ中ならばシーン中のアクターの更新をする
-	if (mGameState == EGamePlay)
+	// ゲームがポーズ中でなければシーン中のアクターの更新をする
+	if (!(mGameState == EPaused))
 	{
 		mUpdatingActors = true;
 		// 衝突判定
