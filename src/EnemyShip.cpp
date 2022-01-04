@@ -25,6 +25,12 @@ void EnemyShip::UpdateActor(float deltaTime)
 	{
 		SetState(EDead);
 	}
+
+	// スクリーンの左端 + ちょっと出たあたりに移動したら破棄する
+	if (GetPosition().x < -1.0f * GetGame()->GetRenderer()->GetScreenWidth() / 2.0f - 100.0f)
+	{
+		SetState(EDead);
+	}
 }
 
 void EnemyShip::OnCollision(CircleCollider* circleCollider)
