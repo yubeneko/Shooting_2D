@@ -43,13 +43,22 @@ void PhysWorld::TestPairwise()
 
 	for (size_t i = 0; i < mCircleColliders.size(); i++)
 	{
-		// 現在注目している円のバウンディングボリュームにおける最大のx座標を保持
+		// 現在注目している円
 		CircleCollider* a = mCircleColliders[i];
+
+		// 現在注目中のCircleColliderが無効な状態になっているならば
+		// そのコライダーは他のコライダーと衝突しない
+		if (a->GetEnabled() == false) { break; }
+
+		// バウンディングボリュームにおける最大のx座標を保持
 		float max = a->GetCircle().mCenter.x + a->GetCircle().mRadius;
 
 		for (size_t j = i + 1; j < mCircleColliders.size(); j++)
 		{
 			CircleCollider* b = mCircleColliders[j];
+
+			// 相手のコライダーが無効になっているならばそのコライダーとは衝突しない
+			if (b->GetEnabled() == false) { break; }
 
 			// 注目中の円と、それと比較する円の位置関係を調べ、x軸上で重なりがなければ
 			// 現在注目している円はそれ以降どんな円とも衝突しない
