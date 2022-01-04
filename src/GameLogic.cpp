@@ -4,12 +4,11 @@
 #include "Texture.h"
 
 #include "PlayerShip.h"
-#include "EnemyShip.h"
-#include "PlayerInputMove.h"
+#include "EnemyShipGenerator.h"
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
-#include "StraightEnemyMove.h"
-#include "CircleCollider.h"
+
+
 #include <vector>
 
 void GameLogic::LoadData(Game* game)
@@ -20,11 +19,8 @@ void GameLogic::LoadData(Game* game)
 	Actor* playerShip = new PlayerShip(game, glm::vec2(0.0f, 0.0f));
 	playerShip->SetTag("Player");
 
-	// 敵機
-	Actor* enemyShip = new EnemyShip(game, glm::vec2(300.0f, 0.0f));
-	StraightEnemyMove* sem = new StraightEnemyMove(enemyShip);
-	sem->SetRightSpeed(-100.0f);
-	enemyShip->SetTag("Enemy");
+	// 敵のスポナーを生成
+	new EnemyShipGenerator(game);
 
 	// 背景用アクター
 	Actor* bgActor = new Actor(game, glm::vec2(0.0f, 0.0f));
