@@ -34,12 +34,16 @@ public:
 	const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
 	void PushUI(class UIScreen* screen);
 
+	// アクターを全部破棄する
+	void UnloadAllActors();
+
 private:
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
 
-	void LoadData();
+	// ゲームのリソースのアンロードを行う
+	// ゲームを終了する前に呼ぶ
 	void UnloadData();
 
 	std::vector<class Actor*> mActors;

@@ -8,11 +8,18 @@
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
 
-
 #include <vector>
 
-void GameLogic::LoadData(Game* game)
+void GameLogic::LoadTitleScene(Game* game)
 {
+
+}
+
+void GameLogic::LoadGameScene(Game* game)
+{
+	// シーンのロード前に前のシーンのアクターを全て破棄する
+	game->UnloadAllActors();
+
 	Renderer* const renderer = game->GetRenderer();
 
 	// プレイヤー操縦機

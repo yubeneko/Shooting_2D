@@ -3,5 +3,6 @@
 class GameLogic
 {
 public:
-	static void LoadData(class Game* game);
+	static void LoadTitleScene(class Game* game);
+	static void LoadGameScene(class Game* game);
 };

@@ -63,7 +63,8 @@ bool Game::Initialize()
 		return false;
 	}
 
-	LoadData();
+	// TODO: タイトルシーンの読み込みの代わり
+	GameLogic::LoadGameScene(this);
 
 	mTicksCount = SDL_GetTicks();
 
@@ -285,20 +286,10 @@ void Game::GenerateOutput()
 	mRenderer->Draw();
 }
 
-void Game::LoadData()
-{
-	GameLogic::LoadData(this);
-}
-
 void Game::UnloadData()
 {
-	// アクターの破棄
-	// アクターの場合、デストラクタで mActors から自分自身を取り除く処理を行うので
-	// このような形で削除を行う
-	while (!mActors.empty())
-	{
-		delete mActors.back();
-	}
+	// 全アクターの破棄
+	UnloadAllActors();
 
 	// UIScreen はデストラクタで mUIStack から自分自身を取り除く処理を行わないので
 	// このような形で削除を行う
@@ -314,6 +305,16 @@ void Game::UnloadData()
 	if (mRenderer)
 	{
 		mRenderer->UnloadData();
+	}
+}
+
+void Game::UnloadAllActors()
+{
+	// デストラクタで mActors から自分自身を取り除く処理を行うので
+	// このような形で削除を行う
+	while (!mActors.empty())
+	{
+		delete mActors.back();
 	}
 }
 
