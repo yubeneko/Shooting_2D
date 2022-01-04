@@ -36,10 +36,6 @@ public:
 	// 必要に応じて死に様を派生クラスでオーバーライドできる
 	virtual void Destroy();
 
-	// Component の取得
-	template <typename T>
-	T* GetComponent();
-
 	// Getter系
 	State GetState() const { return mState; }
 	glm::vec2 GetPosition() const { return mPosition; }

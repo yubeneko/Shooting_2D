@@ -117,17 +117,3 @@ void Actor::Destroy()
 	// 通常は単純に状態を死亡状態にするだけ
 	SetState(EDead);
 }
-
-template <typename T>
-T* Actor::GetComponent()
-{
-	for (auto c : mComponents)
-	{
-		if (typeid(*c) == typeid(T))
-		{
-			return dynamic_cast<T*>(c);
-		}
-	}
-
-	return nullptr;
-}
