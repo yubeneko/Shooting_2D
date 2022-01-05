@@ -39,7 +39,7 @@ target_link_directories(app PRIVATE
 # For SOIL
 find_library(COCOA_FRAMEWORK Cocoa)
 
-target_compile_features(app PUBLIC cxx_std_11)
+target_compile_features(app PUBLIC cxx_std_17)
 target_compile_options(app PUBLIC -Wall -O0 -g )
 target_link_libraries(app
 	${OPENGL_LIBRARIES}

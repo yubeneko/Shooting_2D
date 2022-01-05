@@ -10,6 +10,10 @@
 #include "PauseMenu.h"
 
 #include <algorithm>
+#include <sys/syslimits.h>
+#include <regex>
+#include <filesystem>
+#include <mach-o/dyld.h>
 
 Game::Game()
   : mRenderer(nullptr),
@@ -26,6 +30,21 @@ bool Game::Initialize()
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		SDL_Log("Unable to initialize SDL : %s", SDL_GetError());
+		return false;
+	}
+
+	// 実行ファイルが置かれているディレクトリの絶対パスを取得する
+	// ※ mac限定のAPIを利用
+	char path[PATH_MAX];
+	uint32_t size = sizeof(path);
+	if (_NSGetExecutablePath(path, &size) == 0)
+	{
+		std::filesystem::path ps = path;
+		mExecutableDirPath = ps.remove_filename();
+	}
+	else
+	{
+		SDL_Log("The absolute path of the executable file is too long.");
 		return false;
 	}
 

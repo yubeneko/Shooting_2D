@@ -38,7 +38,7 @@ public:
 		EUIWindow,
 	};
 
-	void SetInputMode(InputMode inputMode) { mInputMode =inputMode; }
+	void SetInputMode(InputMode inputMode) { mInputMode = inputMode; }
 
 	class Font* GetFont(const std::string& fileName);
 	const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
@@ -46,6 +46,8 @@ public:
 
 	// アクターを全部破棄する
 	void UnloadAllActors();
+
+	const std::string& GetExecutableDirPath () const { return mExecutableDirPath; }
 
 private:
 	void ProcessInput();
@@ -68,6 +70,8 @@ private:
 	GameState mGameState;
 	bool mUpdatingActors;
 	InputMode mInputMode;
+	// 実行ファイルが属するディレクトリ
+	std::string mExecutableDirPath;
 
 	std::unordered_map<std::string, class Font*> mFonts;
 	std::vector<class UIScreen*> mUIStack;
