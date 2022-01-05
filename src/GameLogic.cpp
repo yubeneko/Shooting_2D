@@ -9,10 +9,12 @@
 #include "BGSpriteComponent.h"
 #include "TitleScreen.h"
 #include "ResultScreen.h"
+#include "AudioSystem.h"
 
 #include <vector>
 
 std::chrono::system_clock::time_point GameLogic::mGameStartTime;
+SoundEvent GameLogic::mBGM;
 
 void GameLogic::LoadTitleScene(Game* game)
 {
@@ -43,6 +45,12 @@ void GameLogic::LoadTitleScene(Game* game)
 
 	// ゲームステートをタイトルシーンに変更
 	game->SetState(Game::GameState::ETitleScene);
+
+	// 対応するインスタンスがあればストップ
+	if (mBGM.IsValid())
+	{
+		mBGM.Stop();
+	}
 }
 
 void GameLogic::LoadGameScene(Game* game)
@@ -81,6 +89,18 @@ void GameLogic::LoadGameScene(Game* game)
 
 	// スタートした時間を記録
 	mGameStartTime = std::chrono::system_clock::now();
+
+	// BGM再生
+
+	// まだ対応するインスタンスがなければ新しく生成し、あればリスタートさせる
+	if (!mBGM.IsValid())
+	{
+		mBGM = game->GetAudioSystem()->PlayEvent("event:/BGM");
+	}
+	else
+	{
+		mBGM.Restart();
+	}
 }
 
 void GameLogic::GameOverProcess(Game* game)

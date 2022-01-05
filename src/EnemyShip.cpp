@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "StraightEnemyMove.h"
 #include "GameLogic.h"
+#include "AudioSystem.h"
 
 EnemyShip::EnemyShip(Game* game, const glm::vec2& position, float randomNumber)
   : Actor(game, position),
@@ -78,4 +79,7 @@ void EnemyShip::Destroy()
 	mIsDying = true;
 	// 衝突判定を無効化する
 	mCircleCollider->SetEnabled(false);
+
+	// 爆発SEを鳴らす
+	GetGame()->GetAudioSystem()->PlayEvent("event:/Explosion");
 }

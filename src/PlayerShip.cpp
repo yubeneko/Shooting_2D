@@ -73,6 +73,9 @@ void PlayerShip::Destroy()
 	mPlayerInputMove->SetEnabled(false);
 	// 衝突判定を無効化する
 	mCircleCollider->SetEnabled(false);
+
+	// 爆発SEを鳴らす
+	GetGame()->GetAudioSystem()->PlayEvent("event:/Explosion");
 }
 
 void PlayerShip::OnCollision(CircleCollider* circleCollider)

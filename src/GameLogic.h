@@ -13,4 +13,5 @@ public:
 
 private:
 	static std::chrono::system_clock::time_point mGameStartTime;
+	static class SoundEvent mBGM;
 };
