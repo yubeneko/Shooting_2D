@@ -3,19 +3,38 @@
 #include "AnimSpriteComponent.h"
 #include "Game.h"
 #include "Renderer.h"
+#include "StraightEnemyMove.h"
 
-EnemyShip::EnemyShip(Game* game, const glm::vec2& position)
+EnemyShip::EnemyShip(Game* game, const glm::vec2& position, float randomNumber)
   : Actor(game, position),
 	mAnimSprite(nullptr),
 	mCircleCollider(nullptr),
 	mIsDying(false)
 {
 	SetName("Enemy Ship");
-	mAnimSprite = new AnimSpriteComponent(
-		GetGame()->GetRenderer()->GetTexture("Assets/Enemy01.png"), 6, 1, this, 50);
 
 	mCircleCollider = new CircleCollider(this);
 	mCircleCollider->SetRadius(20.0f);
+
+	// x軸スピード
+	float speed = -100.0f;
+
+	// 3割の確率でスピードを1.2倍
+	// 少し速い機体は色を変える
+	if (randomNumber < 0.3f)
+	{
+		speed *= 1.2f;
+		mAnimSprite = new AnimSpriteComponent(
+			GetGame()->GetRenderer()->GetTexture("Assets/Enemy02.png"), 6, 1, this, 50);
+	}
+	else
+	{
+		mAnimSprite = new AnimSpriteComponent(
+			GetGame()->GetRenderer()->GetTexture("Assets/Enemy01.png"), 6, 1, this, 50);
+	}
+
+	StraightEnemyMove* sem = new StraightEnemyMove(this);
+	sem->SetRightSpeed(speed);
 }
 
 void EnemyShip::UpdateActor(float deltaTime)
