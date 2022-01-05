@@ -1,4 +1,6 @@
 #include "AudioSystem.h"
+#include "Game.h"
+
 #include <SDL.h>
 #include <fmod_studio.hpp>
 #include <fmod_errors.h>
@@ -52,8 +54,8 @@ bool AudioSystem::Initialize()
 	// マスターバンクをロードする
 	// 本プロジェクトではバンクはこの2つだけ
 	// Master Bank.strings.bank が先にロードされなければならない
-	LoadBank("Assets/Master.strings.bank");
-	LoadBank("Assets/Master.bank");
+	LoadBank(mGame->GetExecutableDirPath() + "Assets/Master.strings.bank");
+	LoadBank(mGame->GetExecutableDirPath() + "Assets/Master.bank");
 
 	return true;
 }

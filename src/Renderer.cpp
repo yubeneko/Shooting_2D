@@ -156,7 +156,7 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 	else
 	{
 		tex = new Texture();
-		if (tex->Load(fileName))
+		if (tex->Load(mGame->GetExecutableDirPath() + fileName))
 		{
 			mTextures.emplace(fileName, tex);
 		}
@@ -173,7 +173,9 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 bool Renderer::LoadShaders()
 {
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
+	if (!mSpriteShader->Load(
+			mGame->GetExecutableDirPath() + "Shaders/Sprite.vert",
+			mGame->GetExecutableDirPath() + "Shaders/Sprite.frag"))
 	{
 		return false;
 	}

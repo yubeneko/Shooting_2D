@@ -335,7 +335,7 @@ Font* Game::GetFont(const std::string& fileName)
 	else
 	{
 		Font* font = new Font(this);
-		if (font->Load(fileName))
+		if (font->Load(mExecutableDirPath + fileName))
 		{
 			mFonts.emplace(fileName, font);
 		}
