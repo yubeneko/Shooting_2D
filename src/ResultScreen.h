@@ -5,5 +5,5 @@
 class ResultScreen : public UIScreen
 {
 public:
-	ResultScreen(class Game* game);
+	ResultScreen(class Game* game, uint64_t time);
 };

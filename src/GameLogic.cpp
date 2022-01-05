@@ -12,6 +12,8 @@
 
 #include <vector>
 
+std::chrono::system_clock::time_point GameLogic::mGameStartTime;
+
 void GameLogic::LoadTitleScene(Game* game)
 {
 	// シーンのロード前に前のシーンのアクターを全て破棄する
@@ -76,10 +78,19 @@ void GameLogic::LoadGameScene(Game* game)
 
 	// ゲームステートをゲームプレイ状態に変更
 	game->SetState(Game::GameState::EGamePlay);
+
+	// スタートした時間を記録
+	mGameStartTime = std::chrono::system_clock::now();
 }
 
 void GameLogic::GameOverProcess(Game* game)
 {
 	game->SetState(Game::GameState::EResultScene);
-	new ResultScreen(game);
+
+	// 耐え抜いた時間を計算
+	auto finishTime = std::chrono::system_clock::now();
+	auto diff = finishTime - mGameStartTime;
+	auto time = std::chrono::duration_cast<std::chrono::seconds>(diff).count();
+
+	new ResultScreen(game, time);
 }

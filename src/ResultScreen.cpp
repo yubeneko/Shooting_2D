@@ -3,14 +3,18 @@
 #include "UIText.h"
 #include "UIButton.h"
 #include "GameLogic.h"
+#include <sstream>
 
-ResultScreen::ResultScreen(Game* game)
+ResultScreen::ResultScreen(Game* game, uint64_t time)
   : UIScreen(game)
 {
 	mGame->SetInputMode(Game::InputMode::EUIWindow);
 	new UIText("Game Over", this, glm::vec2(0.0f, 300.0f));
 
-	new UIText("Score: 0", this, glm::vec2(0.0f, 200.0f));
+	std::ostringstream oss;
+	oss << "Time : " << time << " seconds";
+
+	new UIText(oss.str(), this, glm::vec2(0.0f, 200.0f));
 
 	// リトライボタン
 	new UIButton(
