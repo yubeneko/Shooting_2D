@@ -8,6 +8,7 @@
 #include "AnimSpriteComponent.h"
 #include "BGSpriteComponent.h"
 #include "TitleScreen.h"
+#include "ResultScreen.h"
 
 #include <vector>
 
@@ -75,4 +76,10 @@ void GameLogic::LoadGameScene(Game* game)
 
 	// ゲームステートをゲームプレイ状態に変更
 	game->SetState(Game::GameState::EGamePlay);
+}
+
+void GameLogic::GameOverProcess(Game* game)
+{
+	game->SetState(Game::GameState::EResultScene);
+	new ResultScreen(game);
 }

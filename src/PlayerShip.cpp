@@ -52,6 +52,12 @@ void PlayerShip::UpdateActor(float deltaTime)
 	{
 		SetState(EDead);
 	}
+
+	// リザルト画面になったら移動できなくする
+	if (GetGame()->GetState() == Game::GameState::EResultScene)
+	{
+		mPlayerInputMove->SetEnabled(false);
+	}
 }
 
 void PlayerShip::Destroy()

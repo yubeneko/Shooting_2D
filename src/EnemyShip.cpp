@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Renderer.h"
 #include "StraightEnemyMove.h"
+#include "GameLogic.h"
 
 EnemyShip::EnemyShip(Game* game, const glm::vec2& position, float randomNumber)
   : Actor(game, position),
@@ -46,9 +47,11 @@ void EnemyShip::UpdateActor(float deltaTime)
 	}
 
 	// スクリーンの左端 + ちょっと出たあたりに移動したら破棄する
-	if (GetPosition().x < -1.0f * GetGame()->GetRenderer()->GetScreenWidth() / 2.0f - 100.0f)
+	// そして、もしゲームプレイ中であればゲームオーバーとする
+	if (GetPosition().x < -1.0f * GetGame()->GetRenderer()->GetScreenWidth() / 2.0f - 10.0f)
 	{
 		SetState(EDead);
+		if (GetGame()->GetState() == Game::GameState::EGamePlay) { GameLogic::GameOverProcess(GetGame()); }
 	}
 }
 
@@ -56,9 +59,11 @@ void EnemyShip::OnCollision(CircleCollider* circleCollider)
 {
 	Actor* other = circleCollider->GetOwner();
 
+	// プレイヤーと衝突したら、ゲームオーバーとする
 	if (other->GetTag() == "Player")
 	{
 		other->Destroy();
+		if (GetGame()->GetState() == Game::GameState::EGamePlay) { GameLogic::GameOverProcess(GetGame()); }
 	}
 }
 

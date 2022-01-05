@@ -25,6 +25,7 @@ public:
 		ETitleScene,
 		EGamePlay,
 		EPaused,
+		EResultScene,
 		EQuit,
 	};
 
