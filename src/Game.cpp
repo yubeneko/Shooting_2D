@@ -11,7 +11,6 @@
 
 #include <algorithm>
 #include <sys/syslimits.h>
-#include <regex>
 #include <filesystem>
 #include <mach-o/dyld.h>
 
