@@ -8,6 +8,7 @@
 #include "Font.h"
 #include "UIScreen.h"
 #include "PauseMenu.h"
+#include "StartUpScreen.h"
 
 #include <algorithm>
 #include <sys/syslimits.h>
@@ -81,7 +82,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	GameLogic::LoadTitleScene(this);
+	new StartUpScreen(this);
 
 	mTicksCount = SDL_GetTicks();
 

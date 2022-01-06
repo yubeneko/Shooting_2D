@@ -1,0 +1,39 @@
+license
+
+Sprites:
+- Ship.png
+- Enemy01.png
+- Enemy02.png
+- Farback01.png
+- Farback02.png
+- Stars.png
+
+These sprites were designed by Jacob Zinman-Jeanes (http://jeanes.co) for Gamedevtuts+ (http://gamedev.tutsplus.com/) and are licensed under the CC BY 3.0 license: http://creativecommons.org/licenses/by/3.0/
+
+To find out more about what's in this mini sprite pack, check out this post: http://gamedev.tutsplus.com/articles/news/enjoy-these-totally-free-space-based-shoot-em-up-sprites/
+
+
+- Explosion.png
+
+This sprite was designed by knik1985 for OPENGAMEART.ORG and are licensed under the CC BY 3.0 license.
+https://opengameart.org/content/explode-effect
+
+
+- ButtonBlue.png
+- ButtonYellow.png
+
+These sprites were included in the github repository here: https://github.com/gameprogcpp/code/tree/master/Chapter12/Assets
+
+
+- Laser.png
+
+These sprites were included in the github repository here: https://github.com/gameprogcpp/code/tree/master/Chapter02/Assets
+
+Sound:
+- SE
+The SEs in this game are provided by OtoLogic and licensed under the CC BY 4.0.
+https://otologic.jp
+
+- BGM
+このゲーム内で使われているBGMは フリーBGM・音楽素材MusMus からお借りしました。
+https://musmus.main.jp
