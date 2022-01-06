@@ -66,7 +66,10 @@ Texture* Font::RenderText(
 	if (iter != mFontData.end())
 	{
 		TTF_Font* font = iter->second;
-		SDL_Surface* surf = TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
+
+		// 折り返しを有効にする(200pxを超えたら折り返し)
+		SDL_Surface* surf = TTF_RenderUTF8_Blended_Wrapped(font, text.c_str(), sdlColor, 600);
+		//SDL_Surface* surf = TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
 		if (surf != nullptr)
 		{
 			texture = new Texture();

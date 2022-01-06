@@ -16,7 +16,9 @@ UIText::UIText(
 	float rotation,
 	const std::string& name)
   : UIComponent(owner, position, scale, rotation, name),
-	mText(showText)
+	mText(showText),
+	mColor(Color::White),
+	mPointSize(40.0f)
 {
 	mFont = owner->GetGame()->GetFont("Assets/Carlito-Regular.ttf");
 	mTextTexture = mFont->RenderText(showText);
@@ -44,7 +46,21 @@ void UIText::SetText(
 	}
 
 	mText = text;
-	mTextTexture = mFont->RenderText(text, color, pointSize);
+	mColor = color;
+	mPointSize = pointSize;
+	mTextTexture = mFont->RenderText(mText, color, pointSize);
+}
+
+void UIText::SetTextColor(const glm::vec3& color)
+{
+	mColor = color;
+	SetText(mText, color);
+}
+
+void UIText::SetPointSize(int pointSize)
+{
+	mPointSize = pointSize;
+	SetText(mText, mColor, pointSize);
 }
 
 void UIText::DrawTexture(Shader* shader, VertexArray* vao)

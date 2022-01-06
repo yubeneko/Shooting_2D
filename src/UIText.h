@@ -24,7 +24,10 @@ public:
 	void SetText(
 		const std::string& text,
 		const glm::vec3& color = Color::White,
-		int pointSize = 40.0f);
+		int pointSize = 40);
+
+	void SetTextColor(const glm::vec3& color);
+	void SetPointSize(int pointSize);
 
 protected:
 	void DrawTexture(class Shader* shader, class VertexArray* vao) override;
@@ -36,4 +39,6 @@ private:
 	class Font* mFont;
 	// テキストのテクスチャ
 	class Texture* mTextTexture;
+	glm::vec3 mColor;
+	int mPointSize;
 };
