@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "GameLogic.h"
 #include "CopyrightScreen.h"
+#include "AudioSystem.h"
 
 TitleScreen::TitleScreen(Game* game)
   : UIScreen(game)
@@ -18,6 +19,7 @@ TitleScreen::TitleScreen(Game* game)
 			Close();
 			mGame->SetInputMode(Game::InputMode::EGamePlaying);
 			GameLogic::LoadGameScene(mGame);
+			mGame->GetAudioSystem()->PlayEvent("event:/Select");
 		},
 		this, glm::vec2(0.0f, 200.0f));
 	new UIText("Start", this, glm::vec2(0.0f, 200.0f));

@@ -207,6 +207,7 @@ void Game::ProcessInput()
 		state.keyboard.GetKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		new PauseMenu(this);
+		mAudioSystem->PlayEvent("event:/Pause");
 	}
 }
 
