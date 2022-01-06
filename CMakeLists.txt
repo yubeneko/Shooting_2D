@@ -57,12 +57,14 @@ add_custom_target(copy_assets ALL
 	COMMAND "cp" "-r" "${CMAKE_SOURCE_DIR}/src/Shaders/" "${CMAKE_BINARY_DIR}/Shaders/"
 )
 
+add_custom_target(add_rpath ALL
+	COMMAND "install_name_tool" "-add_rpath" "@executable_path/lib" "${CMAKE_BINARY_DIR}/app"
+)
+
 add_custom_target(copy_libs ALL
 	COMMAND "mkdir" "-p" "${CMAKE_BINARY_DIR}/lib"
 	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/FMOD/core/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
 	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/FMOD/studio/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
-)
-
-add_custom_target(add_rpath ALL
-	COMMAND "install_name_tool" "-add_rpath" "@executable_path/lib" "${CMAKE_BINARY_DIR}/app"
+	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/SDL/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
+	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/GLEW/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
 )
