@@ -212,15 +212,6 @@ Sound middleware
 Made with FMOD Studio by Firelight Technologies Pty Ltd.
 Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.
 
-<br>
-<br>
-<br>
-
-<img src="src/Assets/FMOD Logo Black - White Background.png" width=70%>
-
-<br>
-<br>
-<br>
 
 [OGG VORBIS CODEC]
 
