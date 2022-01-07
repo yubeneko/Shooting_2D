@@ -156,6 +156,10 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 
+
+I changed the id part of the binary.
+
+
 [SDL_ttf]
 
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts
@@ -177,6 +181,9 @@ freely, subject to the following restrictions:
   misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 
+
+
+I changed the id part of the binary.
 
 
 
