@@ -23,7 +23,7 @@ target_include_directories(app PRIVATE
 	${GLEW_INCLUDE_DIRS}
 	${SDL2_INCLUDE_DIRS}
 	${GLM_INCLUDE_DIRS}
-	/usr/local/include # For SOIL
+	${CMAKE_SOURCE_DIR}/external/SOIL/include
 	${CMAKE_SOURCE_DIR}/external/FMOD/core/inc
 	${CMAKE_SOURCE_DIR}/external/FMOD/studio/inc
 	${SDL2_TTF_INCLUDE_DIRS}
@@ -31,12 +31,13 @@ target_include_directories(app PRIVATE
 
 target_link_directories(app PRIVATE
 	${GLEW_LIBRARY_DIRS}
-	/usr/local/lib # For SOIL
+	${SDL2_TTF_LIBRARY_DIRS}
 	${CMAKE_SOURCE_DIR}/external/FMOD/core/lib
 	${CMAKE_SOURCE_DIR}/external/FMOD/studio/lib
+	${CMAKE_SOURCE_DIR}/external/SOIL/lib
 )
 
-# For SOIL
+# SOIL を使うには COCOA フレームワークが必要
 find_library(COCOA_FRAMEWORK Cocoa)
 
 target_compile_features(app PUBLIC cxx_std_17)
