@@ -3,6 +3,9 @@
 
 このリポジトリはソースコードの公開とアプリの配布のためのリポジトリです。本リポジトリ内にはアプリをビルドするのに必要なファイルがいくつか含まれていませんのでご注意ください。
 
+## ゲーム内容
+プレイヤーは右からやってくる敵のUFOをレーザーで倒します。WASDで移動、スペースキーでレーザーの発射が可能です。プレイヤーが敵のUFOと衝突するか、敵が1体でも画面の左端に到達してしまったらゲームオーバーとなります。どれだけ長く敵の侵攻を食い止められるかがこのゲームの楽しみ方です。
+
 ## ライセンス
 Library
 
@@ -157,7 +160,6 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 
 
-I changed the id part of the binary.
 
 
 [SDL_ttf]
@@ -182,8 +184,6 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 
 
-
-I changed the id part of the binary.
 
 
 
