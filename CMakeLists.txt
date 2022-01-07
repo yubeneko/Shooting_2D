@@ -65,6 +65,4 @@ add_custom_target(copy_libs ALL
 	COMMAND "mkdir" "-p" "${CMAKE_BINARY_DIR}/lib"
 	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/FMOD/core/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
 	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/FMOD/studio/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
-	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/SDL/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
-	COMMAND "cp" "${CMAKE_SOURCE_DIR}/external/GLEW/lib/*.dylib" "${CMAKE_BINARY_DIR}/lib/"
 )
