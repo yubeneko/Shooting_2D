@@ -1,0 +1,24 @@
+@startuml
+
+class UIScreen {}
+class TitleScreen {}
+class ResultScreen {}
+
+class UIComponent {}
+class UIText {}
+class UIButton {}
+class UIImage {}
+
+class Game {}
+
+UIComponent <|-- UIText
+UIComponent <|-- UIButton
+UIComponent <|-- UIImage
+
+UIScreen <|-- TitleScreen
+UIScreen <|-- ResultScreen
+
+UIScreen *- UIComponent
+Game -- UIScreen: 保持 >
+
+@enduml
