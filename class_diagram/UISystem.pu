@@ -1,0 +1,40 @@
+@startuml
+
+class UIScreen {
+
+}
+
+class TitleScreen {
+
+}
+
+class ResultScreen {
+
+}
+
+class UIComponent {
+
+}
+
+class UIText {
+
+}
+
+class UIButton {
+
+}
+
+class UIImage {
+
+}
+
+UIComponent <|-- UIText
+UIComponent <|-- UIButton
+UIComponent <|-- UIImage
+
+UIScreen <|-- TitleScreen
+UIScreen <|-- ResultScreen
+
+UIScreen "1" *- "1..*" UIComponent: 含む >
+
+@enduml
